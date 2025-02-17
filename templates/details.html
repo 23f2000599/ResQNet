@@ -1,0 +1,197 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Details</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Times New Roman', serif;
+        }
+
+        body {
+            min-height: 100vh;
+            background: linear-gradient(135deg, #1e3c72 0%, #2a5298 100%);
+            padding: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            flex-direction: column;
+        }
+
+        .navbar {
+            width: 100%;
+            background-color: white;
+            padding: 10px 20px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            color: blue;
+            border-radius: 5px;
+            margin-bottom: 20px;
+            border-bottom: 2px solid blue;
+            position: fixed;
+            top: 0;
+            left: 0;
+            z-index: 10;
+        }
+
+        .navbar a {
+            color: blue;
+            text-decoration: none;
+            font-weight: 500;
+            font-size: 16px;
+            padding: 8px 20px;
+            border-radius: 5px;
+        }
+
+        .navbar a:hover {
+            background-color: #2a5298;
+            color: white;
+        }
+
+        .navbar a:not(:last-child)::after {
+            content: " • ";
+            margin-left: 10px;
+            margin-right: 10px;
+            color: darkblue;
+        }
+
+        .profile-card {
+            background: white;
+            border-radius: 0;
+            width: 90%;
+            max-width: 1000px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            margin-top: 80px; /* Space for the navbar */
+        }
+
+        .profile-header {
+            display: flex;
+            gap: 20px;
+            padding: 30px;
+            background: rgba(30, 60, 114, 0.1);
+        }
+
+        .profile-image-container {
+            width: 200px;
+            flex-shrink: 0;
+        }
+
+        .profile-image {
+            width: 200px;
+            height: 200px;
+            object-fit: cover;
+            border-radius: 10px;
+        }
+
+        .profile-info {
+            flex-grow: 1;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+        }
+
+        .name {
+            font-size: 24px;
+            font-weight: 600;
+            color: #002147;
+            margin-bottom: 10px;
+        }
+
+        .details {
+            padding: 20px;
+            background: white;
+        }
+
+        .detail-item {
+            display: flex;
+            gap: 10px;
+            align-items: center;
+            margin-bottom: 15px;
+        }
+
+        .detail-label {
+            color: #1e3c72;
+            font-weight: 500;
+            min-width: 120px;
+        }
+
+        .detail-value {
+            color: #444;
+            font-size: 16px;
+        }
+
+        .edit-btn {
+            background-color: #002147;
+            color: white;
+            padding: 8px 20px;
+            border-radius: 5px;
+            font-size: 14px;
+            cursor: pointer;
+            text-decoration: none;
+            display: inline-block;
+            margin-top: 20px;
+        }
+
+        .edit-btn:hover {
+            background-color: #002147;
+        }
+
+        @media (max-width: 600px) {
+            .profile-header {
+                flex-direction: column;
+                align-items: center;
+                text-align: center;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="navbar">
+        <a href="#">Back</a>
+        <a href="#">Emergency Contacts</a>
+        <a href="#">Your Marketplace</a>
+        <a href="#">Medical History</a>
+    </div>
+
+    <div class="profile-card">
+        <div class="profile-header">
+            <div class="profile-image-container">
+                <img src="https://hebbkx1anhila5yf.public.blob.vercel-storage.com/image-NpotY97dz0rAIIhSI9pMmYoSAAEWwt.png" alt="Profile" class="profile-image">
+            </div>
+            
+            <div class="profile-info">
+                <h1 class="name">Andy Pena</h1>
+            </div>
+        </div>
+
+        <div class="details">
+            <div class="detail-item">
+                <span class="detail-label">Name:</span>
+                <span class="detail-value">Andy Pena</span>
+            </div>
+            <div class="detail-item">
+                <span class="detail-label">Date of Birth:</span>
+                <span class="detail-value">01/01/1990</span>
+            </div>
+            <div class="detail-item">
+                <span class="detail-label">Address:</span>
+                <span class="detail-value">1234 Main Street, Springfield</span>
+            </div>
+            <div class="detail-item">
+                <span class="detail-label">Email:</span>
+                <span class="detail-value">andy.pena@example.com</span>
+            </div>
+            <div class="detail-item">
+                <span class="detail-label">Phone Number:</span>
+                <span class="detail-value">+1 333 548 3455</span>
+            </div>
+        </div>
+    </div>
+</body>
+</html>

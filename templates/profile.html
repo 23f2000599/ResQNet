@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Profile</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: serif;
+        }
+
+        body {
+            display: flex;
+            min-height: 100vh;
+        }
+
+        .sidebar {
+            width: 200px;
+            background-color: #002147;
+            color: white;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .sidebar-item {
+            padding: 20px;
+            text-align: center;
+            color: white;
+            text-decoration: none;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+            font-size: 14px;
+        }
+
+        .sidebar-item:hover {
+            background-color: rgba(255, 255, 255, 0.1);
+        }
+
+        .main-content {
+            flex-grow: 1;
+            background: url("/static/profile.jpeg") center/cover no-repeat;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            text-align: center;
+        }
+
+        .welcome-text {
+            font-size: 48px;
+            color: #333;
+            letter-spacing: 4px;
+            margin-bottom: 20px;
+        }
+
+        .subtext {
+            font-size: 24px;
+            color: #444;
+            font-style: italic;
+        }
+    </style>
+</head>
+<body>
+    <nav class="sidebar">
+        <a href="#profile" class="sidebar-item">PROFILE</a>
+        <a href="#emergency" class="sidebar-item">EMERGENCY CONTACTS</a>
+        <a href="#marketplace" class="sidebar-item">YOUR MARKETPLACE</a>
+        <a href="#history" class="sidebar-item">MEDICAL HISTORY</a>
+    </nav>
+    <main class="main-content">
+        <h1 class="welcome-text">WELCOME Y/N</h1>
+        <p class="subtext">help is coming</p>
+    </main>
+</body>
+</html>
+

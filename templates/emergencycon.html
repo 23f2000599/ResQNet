@@ -1,0 +1,229 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Profile</title>
+    <link href="https://fonts.googleapis.com/css2?family=Times+New+Roman:wght@400;500;600&display=swap" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Times New Roman', serif;
+        }
+
+        body {
+            background-color: #1e3c72; /* Deep Dark Blue */
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            color: white;
+            position: relative;
+        }
+
+        .navbar {
+            width: 250px;
+            background-color: #003366; /* Dark Blue */
+            padding: 20px;
+            display: flex;
+            flex-direction: column;
+            justify-content: flex-start;
+            color: white;
+            height: 100%;
+            position: fixed;
+            text-transform: uppercase; /* Make all text uppercase */
+        }
+
+        .navbar a {
+            color: white;
+            text-decoration: none;
+            font-weight: 500;
+            font-size: 14px; /* Reduced font size */
+            padding: 10px;
+            margin-bottom: 15px;
+            border-radius: 5px;
+            transition: background-color 0.3s ease;
+        }
+
+        .navbar a:hover {
+            background-color: #2a5298;
+        }
+
+        .container {
+            margin-left: 250px;
+            width: calc(100% - 250px);
+            padding: 20px;
+            background: white;
+            color: #333;
+            border-radius: 8px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            min-height: 100vh; /* Ensure container takes full height */
+        }
+
+        .header {
+            text-align: center;
+            margin-bottom: 30px;
+        }
+
+        .header h1 {
+            font-size: 36px;
+            color: #1e3c72;
+        }
+
+        .contact-list {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+            gap: 20px;
+        }
+
+        .contact-card {
+            background-color: #add8e6; /* Light Blue */
+            border-radius: 8px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            padding: 20px;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            transition: all 0.3s ease; /* Smooth transition on hover */
+        }
+
+        .contact-card:hover {
+            transform: scale(1.05); /* Slight zoom effect */
+            background-color: #87ceeb; /* Slightly darker blue on hover */
+            box-shadow: 0 8px 12px rgba(0, 0, 0, 0.2);
+        }
+
+        .contact-card h3 {
+            color: #1e3c72;
+            margin-bottom: 10px;
+        }
+
+        .contact-card p {
+            font-size: 16px;
+            margin-bottom: 10px;
+            color: #444;
+        }
+
+        .contact-card .button {
+            background-color: #1e3c72;
+            color: white;
+            padding: 8px 20px;
+            text-align: center;
+            border-radius: 5px;
+            text-decoration: none;
+            cursor: pointer;
+            margin-top: 10px;
+            display: inline-block;
+        }
+
+        .contact-card .button:hover {
+            background-color: #2a5298;
+        }
+
+        .contact-card .phone {
+            font-weight: bold;
+        }
+
+        .contact-card .edit-btn {
+            color: #003366; /* Dark Blue text */
+            font-weight: 500;
+            font-size: 16px;
+            text-decoration: none;
+            border: none;
+            background: none;
+            cursor: pointer;
+            margin-top: 10px;
+        }
+
+        .contact-card .edit-btn:hover {
+            color: #2a5298;
+        }
+
+        .add-contact-btn {
+            background-color: #28a745;
+            color: white;
+            padding: 10px 20px;
+            border-radius: 5px;
+            font-size: 18px;
+            text-decoration: none;
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            display: inline-block;
+            transition: background-color 0.3s ease;
+        }
+
+        .add-contact-btn:hover {
+            background-color: #218838;
+        }
+
+        @media (max-width: 600px) {
+            .navbar {
+                flex-direction: row;
+                justify-content: space-between;
+            }
+
+            .container {
+                margin-left: 0;
+                width: 100%;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="navbar">
+        <a href="#">Back</a>
+        <a href="#">Profile</a>
+        <a href="#">Medical History</a>
+        <a href="#">Your Marketplace</a>
+    </div>
+
+    <div class="container">
+        <div class="header">
+            <h1>Profile</h1>
+        </div>
+
+        <div class="contact-list">
+            <!-- Contact 1 -->
+            <div class="contact-card">
+                <h3>John Doe</h3>
+                <p>Relationship: Father</p>
+                <p class="phone">Phone: +1 123 456 7890</p>
+                <a href="tel:+11234567890" class="button">Call Now</a>
+                <button class="edit-btn">Edit Contact</button>
+            </div>
+
+            <!-- Contact 2 -->
+            <div class="contact-card">
+                <h3>Jane Smith</h3>
+                <p>Relationship: Mother</p>
+                <p class="phone">Phone: +1 987 654 3210</p>
+                <a href="tel:+19876543210" class="button">Call Now</a>
+                <button class="edit-btn">Edit Contact</button>
+            </div>
+
+            <!-- Contact 3 -->
+            <div class="contact-card">
+                <h3>Dr. Lisa Green</h3>
+                <p>Relationship: Family Doctor</p>
+                <p class="phone">Phone: +1 555 123 4567</p>
+                <a href="tel:+15551234567" class="button">Call Now</a>
+                <button class="edit-btn">Edit Contact</button>
+            </div>
+
+            <!-- Contact 4 -->
+            <div class="contact-card">
+                <h3>Emergency Services</h3>
+                <p>Emergency Hotline</p>
+                <p class="phone">Phone: +1 911</p>
+                <a href="tel:+1911" class="button">Call Now</a>
+                <button class="edit-btn">Edit Contact</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Button to add a new emergency contact -->
+    <a href="#" class="add-contact-btn">Add Emergency Contact</a>
+</body>
+</html>
