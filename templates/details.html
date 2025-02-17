@@ -15,50 +15,48 @@
 
         body {
             min-height: 100vh;
-            background: linear-gradient(135deg, #1e3c72 0%, #2a5298 100%);
+            background: white;
             padding: 0;
             display: flex;
-            justify-content: center;
-            align-items: center;
-            flex-direction: column;
+            position: relative;
         }
 
         .navbar {
-            width: 100%;
-            background-color: white;
-            padding: 10px 20px;
+            width: 200px;
+            background-color: #002147;
+            padding: 20px 0;
             display: flex;
-            justify-content: space-between;
+            flex-direction: column;
             align-items: center;
-            color: blue;
-            border-radius: 5px;
-            margin-bottom: 20px;
-            border-bottom: 2px solid blue;
             position: fixed;
-            top: 0;
             left: 0;
-            z-index: 10;
+            top: 0;
+            bottom: 0;
         }
 
         .navbar a {
-            color: blue;
+            color: white;
             text-decoration: none;
-            font-weight: 500;
-            font-size: 16px;
-            padding: 8px 20px;
-            border-radius: 5px;
+            font-weight: bold;
+            font-size: 14px;
+            text-transform: uppercase;
+            padding: 15px 20px;
+            width: 100%;
+            text-align: center;
         }
 
         .navbar a:hover {
             background-color: #2a5298;
-            color: white;
         }
 
-        .navbar a:not(:last-child)::after {
-            content: " • ";
-            margin-left: 10px;
-            margin-right: 10px;
-            color: darkblue;
+        .content {
+            margin-left: 220px;
+            width: 100%;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            padding: 40px;
         }
 
         .profile-card {
@@ -67,14 +65,14 @@
             width: 90%;
             max-width: 1000px;
             box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-            margin-top: 80px; /* Space for the navbar */
+            margin-top: 20px;
         }
 
         .profile-header {
             display: flex;
             gap: 20px;
             padding: 30px;
-            background: rgba(30, 60, 114, 0.1);
+            background: #002147;
         }
 
         .profile-image-container {
@@ -99,13 +97,14 @@
         .name {
             font-size: 24px;
             font-weight: 600;
-            color: #002147;
+            color: white;
             margin-bottom: 10px;
         }
 
         .details {
             padding: 20px;
-            background: white;
+            background: #B0E0E6;
+            border-radius: 5px;
         }
 
         .detail-item {
@@ -116,30 +115,32 @@
         }
 
         .detail-label {
-            color: #1e3c72;
+            color: black;
             font-weight: 500;
             min-width: 120px;
         }
 
         .detail-value {
-            color: #444;
+            color: black;
             font-size: 16px;
         }
 
         .edit-btn {
-            background-color: #002147;
+            background-color: #28a745; /* Green background */
             color: white;
             padding: 8px 20px;
             border-radius: 5px;
             font-size: 14px;
             cursor: pointer;
             text-decoration: none;
-            display: inline-block;
-            margin-top: 20px;
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            z-index: 10;
         }
 
         .edit-btn:hover {
-            background-color: #002147;
+            background-color: #218838; /* Darker green on hover */
         }
 
         @media (max-width: 600px) {
@@ -159,39 +160,43 @@
         <a href="#">Medical History</a>
     </div>
 
-    <div class="profile-card">
-        <div class="profile-header">
-            <div class="profile-image-container">
-                <img src="https://hebbkx1anhila5yf.public.blob.vercel-storage.com/image-NpotY97dz0rAIIhSI9pMmYoSAAEWwt.png" alt="Profile" class="profile-image">
+    <div class="content">
+        <div class="profile-card">
+            <div class="profile-header">
+                <div class="profile-image-container">
+                    <img src="https://hebbkx1anhila5yf.public.blob.vercel-storage.com/image-NpotY97dz0rAIIhSI9pMmYoSAAEWwt.png" alt="Profile" class="profile-image">
+                </div>
+                
+                <div class="profile-info">
+                    <h1 class="name">Andy Pena</h1>
+                </div>
             </div>
-            
-            <div class="profile-info">
-                <h1 class="name">Andy Pena</h1>
-            </div>
-        </div>
 
-        <div class="details">
-            <div class="detail-item">
-                <span class="detail-label">Name:</span>
-                <span class="detail-value">Andy Pena</span>
-            </div>
-            <div class="detail-item">
-                <span class="detail-label">Date of Birth:</span>
-                <span class="detail-value">01/01/1990</span>
-            </div>
-            <div class="detail-item">
-                <span class="detail-label">Address:</span>
-                <span class="detail-value">1234 Main Street, Springfield</span>
-            </div>
-            <div class="detail-item">
-                <span class="detail-label">Email:</span>
-                <span class="detail-value">andy.pena@example.com</span>
-            </div>
-            <div class="detail-item">
-                <span class="detail-label">Phone Number:</span>
-                <span class="detail-value">+1 333 548 3455</span>
+            <div class="details">
+                <div class="detail-item">
+                    <span class="detail-label">Name:</span>
+                    <span class="detail-value">Andy Pena</span>
+                </div>
+                <div class="detail-item">
+                    <span class="detail-label">Date of Birth:</span>
+                    <span class="detail-value">01/01/1990</span>
+                </div>
+                <div class="detail-item">
+                    <span class="detail-label">Address:</span>
+                    <span class="detail-value">1234 Main Street, Springfield</span>
+                </div>
+                <div class="detail-item">
+                    <span class="detail-label">Email:</span>
+                    <span class="detail-value">andy.pena@example.com</span>
+                </div>
+                <div class="detail-item">
+                    <span class="detail-label">Phone Number:</span>
+                    <span class="detail-value">+1 333 548 3455</span>
+                </div>
             </div>
         </div>
     </div>
+
+    <a href="#" class="edit-btn">Edit Profile</a> <!-- Edit Button -->
 </body>
 </html>
