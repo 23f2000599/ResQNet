@@ -6,7 +6,11 @@ def index():
 @app.route("/emergencefood")
 def emergencefood():
     return render_template("emergencefood.html")
-
-
+@app.route("/essentials")
+def essentials():
+    return render_template("essentials.html")
+@app.route("/medicals")
+def medicals():
+    return render_template("medicals.html")
 if __name__=="__main__":
     app.run(debug=True)

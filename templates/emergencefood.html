@@ -15,13 +15,15 @@
             font-family: Arial, sans-serif;
             background-color: #f5f5f5;
             color: #333;
+            perspective: 1500px;
         }
 
         .navbar {
-            background-color: #333;
+            background-color: #003366;
             color: #fff;
-            padding: 10px;
+            padding: 20px;
             text-align: center;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
         }
 
         .navbar ul {
@@ -39,46 +41,72 @@
             color: white;
             font-size: 18px;
             cursor: pointer;
+            transition: color 0.3s;
         }
 
         .navbar ul li button:hover {
             color: #ffd700;
         }
 
-        .product-section {
+        .add-product-btn {
+            background-color: #e67e22;
+            color: white;
+            padding: 10px 20px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
             margin: 20px;
+            transition: background-color 0.3s ease;
+        }
+
+        .add-product-btn:hover {
+            background-color: #d35400;
+        }
+
+        .product-section {
+            margin: 40px;
             padding: 20px;
+            transform-style: preserve-3d;
+            transition: transform 0.3s ease;
         }
 
         .product-grid {
             display: flex;
             justify-content: space-between;
             flex-wrap: wrap;
+            gap: 20px;
+            perspective: 1000px;
         }
 
         .product-card {
             width: 30%;
-            margin-bottom: 20px;
             background-color: #fff;
-            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-            border-radius: 8px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+            border-radius: 10px;
             overflow: hidden;
-            transform: perspective(1500px) rotateY(0deg);
-            transition: transform 0.3s ease-in-out;
-        }
-
-        .product-card:hover {
-            transform: perspective(1500px) rotateY(15deg);
+            text-align: center;
+            transform-style: preserve-3d;
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+            position: relative;
         }
 
         .product-card img {
             width: 100%;
             height: 200px;
             object-fit: cover;
+            border-radius: 10px;
+            transition: transform 0.3s ease;
+        }
+
+        .product-name {
+            font-size: 18px;
+            font-weight: bold;
+            margin-top: 10px;
         }
 
         .product-info {
             padding: 10px;
+            transform: translateZ(30px);
         }
 
         .price {
@@ -94,12 +122,12 @@
         .ratings {
             color: gold;
             font-weight: bold;
+            margin-top: 5px;
         }
 
-        .location {
-            margin-top: 10px;
-            padding: 5px;
-            width: 100%;
+        .ratings span {
+            font-size: 20px;
+            margin-right: 5px;
         }
 
         .add-to-cart {
@@ -110,91 +138,235 @@
             border: none;
             border-radius: 5px;
             cursor: pointer;
+            transition: background-color 0.3s ease;
         }
 
         .add-to-cart:hover {
             background-color: #27ae60;
         }
+
+        .product-card:hover {
+            transform: rotateY(10deg) rotateX(5deg) scale(1.05);
+            box-shadow: 0 15px 40px rgba(0, 0, 0, 0.2);
+        }
+
+        .product-card:hover img {
+            transform: scale(1.1);
+        }
+
+        .product-card:active {
+            transform: scale(0.98);
+        }
+
+        /* Form styling */
+        .product-form {
+            display: none;
+            margin: 20px;
+            padding: 20px;
+            background-color: #fff;
+            border-radius: 10px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+        }
+
+        .product-form input, .product-form button {
+            width: 100%;
+            padding: 10px;
+            margin: 10px 0;
+            border-radius: 5px;
+            border: 1px solid #ccc;
+        }
+
+        .product-form button {
+            background-color: #3498db;
+            color: white;
+            cursor: pointer;
+            transition: background-color 0.3s;
+        }
+
+        .product-form button:hover {
+            background-color: #2980b9;
+        }
+
+        .product-form input[type="file"] {
+            padding: 10px;
+        }
     </style>
 </head>
 <body>
-    <!-- Navbar -->
     <div class="navbar">
         <ul>
             <li><button onclick="showCategory('drinks')">Drinks</button></li>
             <li><button onclick="showCategory('diary')">Dairy Products</button></li>
             <li><button onclick="showCategory('chocolates')">Chocolates</button></li>
             <li><button onclick="showCategory('chips')">Chips</button></li>
-            <li><button onclick="showCategory('pickles')">Pickles</button></li>
+            <li><button onclick="showCategory('groceries')">Groceries</button></li>
         </ul>
     </div>
 
-    <!-- Product Section -->
+    <!-- Add Product Button -->
+    <button class="add-product-btn" onclick="toggleForm()">Add Product</button>
+
+    <!-- Product Form -->
+    <div class="product-form" id="product-form">
+        <input type="text" id="product-name" placeholder="Product Name" required>
+        <input type="text" id="product-price" placeholder="Price" required>
+        <input type="text" id="product-quantity" placeholder="Quantity" required>
+        <input type="number" id="product-rating" placeholder="Rating (1 to 5)" required min="1" max="5">
+        <input type="file" id="product-image" required>
+        <button onclick="addProduct()">Add Product</button>
+    </div>
+
     <div class="product-section" id="product-section">
-        <h2>Chocolates</h2>
         <div class="product-grid" id="product-grid"></div>
     </div>
 
     <script>
         const productData = {
             drinks: [
-                { name: "Coca Cola", price: "₹40", quantity: "500ml", rating: "⭐⭐⭐⭐ (4)", image: "/static/waterbottle.jpg" },
-                { name: "Pepsi", price: "₹35", quantity: "500ml", rating: "⭐⭐⭐ (3)", image: "/static/cocacola.jpg" },
-                { name: "Fanta", price: "₹45", quantity: "500ml", rating: "⭐⭐⭐⭐ (4)", image: "/static/pepsi.jpg" },
-                { name: "Sprite", price: "₹40", quantity: "500ml", rating: "⭐⭐⭐⭐ (4)", image: "/static/sprite.jpg" },
-                { name: "Mountain Dew", price: "₹50", quantity: "250ml", rating: "⭐⭐⭐⭐⭐ (5)", image: "/static/ors.jpg" }
+                { name: "Water Bottles", price: "₹40", quantity: "500ml", rating: 4, image: "/static/waterbottle.jpg" },
+                { name: "Coca Cola", price: "₹35", quantity: "500ml", rating: 3, image: "/static/cocacola.jpg" },
+                { name: "Pepsi", price: "₹45", quantity: "500ml", rating: 4, image: "/static/pepsi.jpg" },
+                { name: "Sprite", price: "₹40", quantity: "500ml", rating: 4, image: "/static/sprite.jpg" },
+                { name: "ORS Juice", price: "₹50", quantity: "250ml", rating: 5, image: "/static/ors.jpg" }
             ],
             diary: [
-                { name: "Milk", price: "₹30", quantity: "1L", rating: "⭐⭐⭐⭐ (4)", image: "/static/milk.jpeg" },
-                { name: "Breads", price: "₹100", quantity: "250g", rating: "⭐⭐⭐⭐⭐ (5)", image: "static/breads.jpeg" },
-                { name: "Buttermilk", price: "₹120", quantity: "200g", rating: "⭐⭐⭐⭐ (4)", image: "/static/buttermilk.webp" },
-                { name: "ghee", price: "₹50", quantity: "400g", rating: "⭐⭐⭐⭐⭐ (5)", image: "/static/ghee.jpg" },
-                { name: "Paneer", price: "₹150", quantity: "500g", rating: "⭐⭐⭐⭐ (4)", image: "/static/paneer.avif" }
+                { name: "Milk", price: "₹30", quantity: "1L", rating: 4, image: "/static/milk.jpeg" },
+                { name: "Breads", price: "₹100", quantity: "250g", rating: 5, image: "/static/breads.jpeg" },
+                { name: "Buttermilk", price: "₹120", quantity: "200g", rating: 4, image: "/static/buttermilk.webp" },
+                { name: "Ghee", price: "₹50", quantity: "400g", rating: 5, image: "/static/ghee.jpg" },
+                { name: "Biscuits", price: "₹150", quantity: "500g", rating: 4, image: "/static/biscuits.jpg" }
             ],
             chocolates: [
-                { name: "Diary Milk", price: "₹150", quantity: "100g", rating: "⭐⭐⭐⭐⭐ (5)", image: "chocolate1.jpg" },
-                { name: "Kit Kat", price: "₹200", quantity: "150g", rating: "⭐⭐⭐⭐ (4)", image: "chocolate2.jpg" },
-                { name: "Milky Bar", price: "₹250", quantity: "200g", rating: "⭐⭐⭐⭐ (4)", image: "chocolate3.jpg" },
-                { name: "Munch", price: "₹180", quantity: "150g", rating: "⭐⭐⭐⭐⭐ (5)", image: "chocolate4.jpg" },
-                { name: "Nutty Chocolate", price: "₹220", quantity: "200g", rating: "⭐⭐⭐⭐ (4)", image: "chocolate5.jpg" }
+                { name: "Diary Milk", price: "₹150", quantity: "100g", rating: 5, image: "/static/diarymilk.jpeg" },
+                { name: "Kit Kat", price: "₹200", quantity: "150g", rating: 4, image: "/static/kitkat.webp" },
+                { name: "Milky Bar", price: "₹250", quantity: "200g", rating: 4, image: "/static/milkybar.jpeg" },
+                { name: "Munch", price: "₹180", quantity: "150g", rating: 5, image: "/static/munch.jpg" },
+                { name: "Snickers", price: "₹220", quantity: "200g", rating: 4, image: "/static/snickers.jpg" }
             ],
             chips: [
-                { name: "Lays", price: "₹20", quantity: "50g", rating: "⭐⭐⭐⭐ (4)", image: "chips1.jpg" },
-                { name: "Pringles", price: "₹50", quantity: "100g", rating: "⭐⭐⭐⭐ (4)", image: "chips2.jpg" },
-                { name: "Doritos", price: "₹60", quantity: "150g", rating: "⭐⭐⭐⭐⭐ (5)", image: "chips3.jpg" },
-                { name: "Cheetos", price: "₹40", quantity: "100g", rating: "⭐⭐⭐⭐ (4)", image: "chips4.jpg" },
-                { name: "Tortilla Chips", price: "₹70", quantity: "200g", rating: "⭐⭐⭐⭐⭐ (5)", image: "chips5.jpg" }
+                { name: "Blue Lays", price: "₹20", quantity: "50g", rating: 4, image: "/static/bluelays.webp" },
+                { name: "Cheetos", price: "₹20", quantity: "50g", rating: 3, image: "/static/cheetos.jpg" },
+                { name: "Doritos", price: "₹30", quantity: "50g", rating: 4, image: "/static/doritos.jpg" },
+                { name: "Kurkure", price: "₹50", quantity: "100g", rating: 5, image: "/static/kurkure.png" },
+                { name: "Red Pringles", price: "₹40", quantity: "75g", rating: 3, image: "/static/redpringles.webp" }
             ],
-            pickles: [
-                { name: "Mango Pickle", price: "₹80", quantity: "250g", rating: "⭐⭐⭐⭐ (4)", image: "pickle1.jpg" },
-                { name: "Lemon Pickle", price: "₹70", quantity: "250g", rating: "⭐⭐⭐⭐⭐ (5)", image: "pickle2.jpg" },
-                { name: "Garlic Pickle", price: "₹90", quantity: "300g", rating: "⭐⭐⭐⭐ (4)", image: "pickle3.jpg" },
-                { name: "Mixed Pickle", price: "₹85", quantity: "400g", rating: "⭐⭐⭐⭐ (4)", image: "pickle4.jpg" },
-                { name: "Chili Pickle", price: "₹95", quantity: "350g", rating: "⭐⭐⭐⭐⭐ (5)", image: "pickle5.jpg" }
+            groceries: [
+                { name: "Rice", price: "₹120", quantity: "1kg", rating: 4, image: "/static/rice.jpg" },
+                { name: "Aata Flour", price: "₹120", quantity: "1kg", rating: 5, image: "/static/aata.avif" },
+                { name: "Sugar", price: "₹120", quantity: "1kg", rating: 4, image: "/static/sugar.webp" },
+                { name: "Salt", price: "₹90", quantity: "500g", rating: 5, image: "/static/salt.cms" },
+                { name: "Cooking Oil", price: "₹120", quantity: "1kg", rating: 3, image: "/static/oil.jpeg" },
+                { name: "Toor Dal", price: "₹120", quantity: "1kg", rating: 3, image: "/static/toordal.webp" },
+                { name: "Moong Dal", price: "₹120", quantity: "1kg", rating: 3, image: "/static/moongdal.jpeg" }
             ]
         };
 
-        function showCategory(category) {
-            const section = document.getElementById("product-section");
-            section.innerHTML = `<h2>${category.charAt(0).toUpperCase() + category.slice(1)}</h2>
-                                 <div class="product-grid" id="product-grid"></div>`;
-            const grid = document.getElementById("product-grid");
+        let currentCategory = 'drinks';
 
-            productData[category].forEach(product => {
-                grid.innerHTML += `
-                    <div class="product-card">
-                        <img src="${product.image}" alt="${product.name}">
-                        <div class="product-info">
-                            <p class="price">${product.price}</p>
-                            <p class="quantity">${product.quantity}</p>
-                            <div class="ratings">${product.rating}</div>
-                            <button class="add-to-cart">Add to Cart</button>
-                        </div>
-                    </div>`;
+        // Show the appropriate product category
+        function showCategory(category) {
+            currentCategory = category;
+            displayProducts();
+        }
+
+        // Display products for the current category
+        function displayProducts() {
+            const productGrid = document.getElementById("product-grid");
+            productGrid.innerHTML = "";
+
+            const products = productData[currentCategory];
+
+            products.forEach(product => {
+                const productCard = document.createElement("div");
+                productCard.classList.add("product-card");
+
+                const productImage = document.createElement("img");
+                productImage.src = product.image;
+                productCard.appendChild(productImage);
+
+                const productName = document.createElement("div");
+                productName.classList.add("product-name");
+                productName.textContent = product.name;
+                productCard.appendChild(productName);
+
+                const productInfo = document.createElement("div");
+                productInfo.classList.add("product-info");
+
+                const productPrice = document.createElement("div");
+                productPrice.classList.add("price");
+                productPrice.textContent = product.price;
+                productInfo.appendChild(productPrice);
+
+                const productQuantity = document.createElement("div");
+                productQuantity.classList.add("quantity");
+                productQuantity.textContent = product.quantity;
+                productInfo.appendChild(productQuantity);
+
+                const productRating = document.createElement("div");
+                productRating.classList.add("ratings");
+                for (let i = 1; i <= 5; i++) {
+                    const star = document.createElement("span");
+                    star.textContent = i <= product.rating ? "★" : "☆";
+                    productRating.appendChild(star);
+                }
+                productInfo.appendChild(productRating);
+
+                productCard.appendChild(productInfo);
+
+                const addToCartButton = document.createElement("button");
+                addToCartButton.classList.add("add-to-cart");
+                addToCartButton.textContent = "Add to Cart";
+                productCard.appendChild(addToCartButton);
+
+                productGrid.appendChild(productCard);
             });
         }
 
-        showCategory('chocolates');
+        // Toggle product form visibility
+        function toggleForm() {
+            const form = document.getElementById("product-form");
+            form.style.display = form.style.display === "none" ? "block" : "none";
+        }
+
+        // Add product to the current category
+        function addProduct() {
+            const name = document.getElementById("product-name").value;
+            const price = document.getElementById("product-price").value;
+            const quantity = document.getElementById("product-quantity").value;
+            const rating = document.getElementById("product-rating").value;
+            const image = document.getElementById("product-image").files[0];
+
+            if (name && price && quantity && rating && image) {
+                const reader = new FileReader();
+                reader.onloadend = () => {
+                    const newProduct = {
+                        name,
+                        price,
+                        quantity,
+                        rating: parseInt(rating),
+                        image: reader.result
+                    };
+
+                    productData[currentCategory].push(newProduct);
+                    displayProducts();
+                    toggleForm();
+                };
+                reader.readAsDataURL(image);
+            }
+        }
+
+        // Add product to the cart
+        function addToCart(product) {
+            let cart = JSON.parse(localStorage.getItem('cart')) || []; // Get existing cart or create a new one
+            cart.push(product); // Add product to cart
+            localStorage.setItem('cart', JSON.stringify(cart)); // Save updated cart to localStorage
+
+            // Redirect to the cart page
+            window.location.href = "cart.html";
+        }
+
+
+        displayProducts(); // Initial call to display products
     </script>
 </body>
 </html>

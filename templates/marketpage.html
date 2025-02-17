@@ -52,7 +52,7 @@
     <div class="search-container">
         <select id="category">
             <option value="emergency">Emergency Foods</option>
-            <option value="electronics">Electronics</option>
+            <option value="essential">Essentials</option>
             <option value="medical">Medical Supplies</option>
         </select>
         <button onclick="redirectToResults()">Search</button>
@@ -63,9 +63,9 @@
             <img src="static\ef.jpeg" alt="Emergency Food"><br>
             <p>Emergency Food Kit - where you can lend and sale all necessary food supplies.</p>
         </div>
-        <div class="grid-item" data-category="electronics">
-            <img src="static\electronics.jpeg" alt="Electronics"><br>
-            <p>Electronics - where you can lend and sale necessary equipments for people.</p>
+        <div class="grid-item" data-category="essential">
+            <img src="static\electronics.jpeg" alt="Essentials"><br>
+            <p>Essentials - where you can lend and sale necessary things for people.</p>
         </div>
         <div class="grid-item" data-category="medical">
             <img src="static\medicals.jpeg" alt="Medical Supplies"><br>
@@ -78,8 +78,8 @@
             let category = document.getElementById('category').value;
             let pageMap = {
                 'emergency': '\emergencefood',
-                'electronics': 'electronics.html',
-                'medical': 'medical_supplies.html'
+                'essential': '\essentials',
+                'medical': '\medicals'
             };
             if (pageMap[category]) {
                 window.location.href = pageMap[category];
