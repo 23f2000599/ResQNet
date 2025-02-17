@@ -1,0 +1,171 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sign Up</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #1E6B8F;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+        }
+        .container {
+            display: flex;
+            background-color: white;
+            border-radius: 10px;
+            box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.3);
+            max-width: 800px;
+            width: 100%;
+        }
+        .image-container {
+            flex: 1;
+            background-image: url('/static/signup.png'); 
+            background-size: cover;
+            background-position: center;
+            border-top-left-radius: 10px;
+            border-bottom-left-radius: 10px;
+        }
+        .form-container {
+            flex: 1;
+            padding: 20px;
+            text-align: center;
+        }
+        h2 {
+            color: #1E6B8F;
+        }
+        input {
+            width: 90%;
+            padding: 10px;
+            margin: 10px 0;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+        }
+        .error {
+            color: red;
+            font-size: 12px;
+            text-align: left;
+            margin-bottom: 5px;
+        }
+        .btn {
+            width: 100%;
+            padding: 10px;
+            font-size: 1em;
+            background-color: #007BFF;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+        .btn:hover {
+            background-color: #0056b3;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="container">
+        <!-- Photo Grid Section -->
+        <div class="image-container"></div>
+
+        <!-- Signup Form Section -->
+        <div class="form-container">
+            <h2>Sign Up</h2>
+            <form id="signupForm">
+                <input type="email" id="email" placeholder="Enter your email" required>
+                <div class="error" id="emailError"></div>
+
+                <input type="text" id="username" placeholder="Choose a username" required>
+                <div class="error" id="usernameError"></div>
+
+                <input type="password" id="password" placeholder="Enter password" required>
+                <div class="error" id="passwordError"></div>
+
+                <input type="password" id="confirmPassword" placeholder="Confirm password" required>
+                <div class="error" id="confirmPasswordError"></div>
+
+                <button type="submit" class="btn">Sign Up</button>
+            </form>
+        </div>
+    </div>
+
+    <script>
+        const existingUsernames = ["user12345", "john_doe", "testuser"]; // Example of existing usernames
+
+        document.getElementById("signupForm").addEventListener("submit", function(event) {
+            event.preventDefault(); // Prevent form from submitting
+            
+            let isValid = true;
+            
+            // Email validation
+            const email = document.getElementById("email").value.trim();
+            const emailError = document.getElementById("emailError");
+            const emailPattern = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+            if (!email) {
+                emailError.textContent = "Email is required.";
+                isValid = false;
+            } else if (!emailPattern.test(email)) {
+                emailError.textContent = "Enter a valid email address.";
+                isValid = false;
+            } else {
+                emailError.textContent = "";
+            }
+
+            // Username validation
+            const username = document.getElementById("username").value.trim();
+            const usernameError = document.getElementById("usernameError");
+            if (!username) {
+                usernameError.textContent = "Username is required.";
+                isValid = false;
+            } else if (username.length < 8) {
+                usernameError.textContent = "Username must be at least 8 characters long.";
+                isValid = false;
+            } else if (existingUsernames.includes(username)) {
+                usernameError.textContent = "This username is already taken.";
+                isValid = false;
+            } else {
+                usernameError.textContent = "";
+            }
+
+            // Password validation
+            const password = document.getElementById("password").value;
+            const passwordError = document.getElementById("passwordError");
+            const passwordPattern = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\W).{8,}$/;
+            if (!password) {
+                passwordError.textContent = "Password is required.";
+                isValid = false;
+            } else if (!passwordPattern.test(password)) {
+                passwordError.textContent = "Password must contain an uppercase, lowercase, special character, and be at least 8 characters.";
+                isValid = false;
+            } else {
+                passwordError.textContent = "";
+            }
+
+            // Confirm Password validation
+            const confirmPassword = document.getElementById("confirmPassword").value;
+            const confirmPasswordError = document.getElementById("confirmPasswordError");
+            if (!confirmPassword) {
+                confirmPasswordError.textContent = "Confirm Password is required.";
+                isValid = false;
+            } else if (confirmPassword !== password) {
+                confirmPasswordError.textContent = "Passwords do not match.";
+                isValid = false;
+            } else {
+                confirmPasswordError.textContent = "";
+            }
+
+            // If everything is valid, submit the form
+            if (isValid) {
+                alert("Sign up successful!");
+                // Here, you can add code to send the data to a backend for storage
+            }
+        });
+    </script>
+
+</body>
+</html>

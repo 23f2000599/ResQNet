@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Login - Social Welfare App</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #1E6B8F;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+        }
+        .container {
+            display: flex;
+            background-color: #fff;
+            border-radius: 10px;
+            box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.3);
+            max-width: 800px;
+            width: 100%;
+        }
+        .image-container {
+            flex: 1;
+            background-image: url('/static/login.png'); /* Replace with your image URL */
+            background-size: cover;
+            background-position: center;
+            border-top-left-radius: 10px;
+            border-bottom-left-radius: 10px;
+        }
+        .form-container {
+            flex: 1;
+            padding: 20px;
+            text-align: center;
+        }
+        h2 {
+            color: #1E6B8F;
+        }
+        input {
+            width: 90%;
+            padding: 10px;
+            margin: 10px 0;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+        }
+        .btn {
+            width: 100%;
+            padding: 10px;
+            font-size: 1em;
+            background-color: #007BFF;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+        .btn:hover {
+            background-color: #0056b3;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="image-container">
+
+        </div>
+        <div class="form-container">
+            <h2>Login</h2>
+            <p>Welcome back! Please enter your credentials to continue.</p>
+            <form action="dashboard.html" method="POST">
+                <input type="text" placeholder="Username" required><br>
+                <input type="password" placeholder="Password" required><br>
+                <button type="submit" class="btn">Login</button>
+            </form>
+        </div>
+    </div>
+</body>
+</html>
