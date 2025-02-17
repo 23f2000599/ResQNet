@@ -43,5 +43,9 @@ def send_sos():
     except Exception as e:
         return jsonify({"error": str(e)}), 500
 
+@app.route("/index")
+def index_page():
+    return render_template("TRY.html")
+
 if __name__ == '__main__':
     app.run(debug=True)
