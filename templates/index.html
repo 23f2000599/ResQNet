@@ -1,0 +1,176 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Location-Based Inactivity Alert</title>
+    <style>
+        .noise-alert {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(255, 0, 0, 0.5);
+            color: white;
+            text-align: center;
+            font-size: 30px;
+            padding-top: 200px;
+            z-index: 999;
+        }
+        button {
+            padding: 10px 20px;
+            font-size: 16px;
+            cursor: pointer;
+            background-color: #28a745;
+            color: white;
+            border: none;
+            border-radius: 5px;
+        }
+        #transcript {
+            margin-top: 20px;
+            font-size: 20px;
+            color: #333;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="noise-alert" id="noise-alert">
+        <p>Loud Alert Activated! Please say "I'm fine" to stop it.</p>
+    </div>
+
+    <button onclick="startLocationTracking()">Start Location Tracking</button>
+
+    <!-- Display the speech recognition transcript -->
+    <div id="transcript"></div>
+
+    <script>
+        let lastPosition = null;
+        let idleTimer = null;
+        let isAlertActive = false;
+        let recognition;
+        let audio;  // Declare audio globally so it can be accessed when stopping the sound
+
+        // Start location tracking
+        function startLocationTracking() {
+            if (navigator.geolocation) {
+                navigator.geolocation.watchPosition(handlePositionChange, handleError, {
+                    enableHighAccuracy: true,
+                    timeout: 1000,
+                    maximumAge: 0
+                });
+            } else {
+                console.log("Geolocation is not supported by this browser.");
+            }
+        }
+
+        // Handle position change and trigger idle alert
+        function handlePositionChange(position) {
+            console.log('Current Position:', position.coords.latitude, position.coords.longitude); // Check position
+            const currentPosition = { lat: position.coords.latitude, lon: position.coords.longitude };
+
+            if (lastPosition) {
+                const distance = getDistance(lastPosition, currentPosition);
+                if (distance < 5) { 
+                    if (!idleTimer) {
+                        console.log("User is idle in the same position");
+                        idleTimer = setTimeout(() => {
+                            startNoiseAlert();
+                        }, 1000); 
+                    }
+                } else {
+                    clearTimeout(idleTimer); 
+                    idleTimer = null;
+                }
+            }
+
+            lastPosition = currentPosition;
+        }
+
+        // Get distance between two coordinates (Haversine formula)
+        function getDistance(pos1, pos2) {
+            const R = 6371e3; 
+            const φ1 = pos1.lat * Math.PI / 180;
+            const φ2 = pos2.lat * Math.PI / 180;
+            const Δφ = (pos2.lat - pos1.lat) * Math.PI / 180;
+            const Δλ = (pos2.lon - pos1.lon) * Math.PI / 180;
+
+            const a = Math.sin(Δφ / 2) * Math.sin(Δφ / 2) +
+                      Math.cos(φ1) * Math.cos(φ2) *
+                      Math.sin(Δλ / 2) * Math.sin(Δλ / 2);
+
+            const c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
+            return R * c; 
+        }
+
+        // Start noise alert if the user is idle for too long
+        function startNoiseAlert() {
+            if (!isAlertActive) {
+                document.getElementById("noise-alert").style.display = "block";
+                playLoudNoise();
+                startVoiceRecognition(); // Start listening for voice commands
+            }
+        }
+
+        // Play loud noise (sound)
+        function playLoudNoise() {
+            if (!audio) { // Only create the audio object if it doesn't exist already
+                audio = new Audio('http://127.0.0.1:5000/static/assets/bleep-41488.mp3');
+                audio.loop = true;
+            }
+            audio.play().catch(err => console.error("Audio playback failed:", err)); // Catch any playback errors
+            isAlertActive = true;
+        }
+
+        // Stop the noise alert and navigate to stop.html
+        function stopNoiseAlert() {
+            // Stop the sound and reset it
+            console.log("Stopping the sound...");  // Debugging line
+            if (audio) {
+                audio.pause();  // Stop the sound
+                audio.currentTime = 0;  // Reset the sound to the start
+                console.log("Audio stopped");  // Debugging line
+            }
+            isAlertActive = false;  // Set the alert state to inactive
+            window.location.href = '/stop';  // Redirect to stop.html page
+        }
+
+        // Start voice recognition to listen for "I'm fine"
+        function startVoiceRecognition() {
+            console.log("Starting voice recognition...");  // Debugging line
+            recognition = new (window.SpeechRecognition || window.webkitSpeechRecognition)();
+            recognition.lang = "en-US";
+            recognition.continuous = false;
+
+            recognition.onresult = function(event) {
+                const transcript = event.results[0][0].transcript.toLowerCase();
+                console.log("You said: ", transcript);  // Debugging line
+                
+                // Display the transcript on the page
+                document.getElementById("transcript").innerText = `You said: ${transcript}`;
+
+                // Check if the user says "stop"
+                if (transcript.includes("stop")) {
+                    console.log("Stopping the sound...");  // Debugging line
+                    stopNoiseAlert();  // Stop the noise alert
+                }
+            };
+
+
+            recognition.onerror = function(event) {
+                console.log("Speech recognition error:", event.error);  // Debugging line
+            };
+
+            recognition.start().catch(err => console.error("Speech recognition failed:", err)); // Catch recognition errors
+        }
+
+        // Handle geolocation errors
+        function handleError(error) {
+            console.warn(`ERROR(${error.code}): ${error.message}`);
+        }
+    </script>
+
+</body>
+</html>
