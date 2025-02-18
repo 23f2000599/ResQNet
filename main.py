@@ -12,5 +12,8 @@ def essentials():
 @app.route("/medicals")
 def medicals():
     return render_template("medicals.html")
+@app.route("/cart")
+def cart():
+    return render_template("cart.html")
 if __name__=="__main__":
     app.run(debug=True)

@@ -15,7 +15,7 @@
             font-family: Arial, sans-serif;
             background-color: #f5f5f5;
             color: #333;
-            perspective: 1500px; /* Adding perspective for 3D effects */
+            perspective: 1500px;
         }
 
         .navbar {
@@ -103,7 +103,7 @@
             flex-wrap: wrap;
             gap: 20px;
             padding: 20px;
-            perspective: 1500px; /* Adding perspective to the product grid */
+            perspective: 1500px;
         }
 
         .product-card {
@@ -174,7 +174,6 @@
         .product-card img:hover {
             transform: scale(1.1);
         }
-
     </style>
 </head>
 <body>
@@ -203,17 +202,24 @@
     </div>
 
     <script>
+        // Clear the cart on page load
+        window.onload = function() {
+            localStorage.removeItem('cart'); 
+        };
+    
         const productData = {
             medicals: [
                 { name: "Band Aids", price: "₹10", quantity: "5 nos", rating: 5, image: "/static/bandaids.jpg" },
-                { name: "Tissues", price: "₹50", quantity: "50 nos", rating: 4, image: "/static/tissues.jpg" },
+                { name: "Wet Tissues", price: "₹50", quantity: "50 nos", rating: 4, image: "/static/tissues.jpg" },
                 { name: "Napkin", price: "₹50", quantity: "10 nos", rating: 4, image: "/static/napkin.webp" },
                 { name: "Sanitary Pads", price: "₹100", quantity: "10 nos", rating: 5, image: "/static/pads.webp" },
                 { name: "Hand Wash", price: "₹100", quantity: "50g", rating: 4, image: "/static/handwash.jpg" },
                 { name: "Vicks", price: "₹70", quantity: "100g", rating: 4, image: "/static/vicks.webp" },
+                { name: "Sanitizer", price: "₹10", quantity: "50ml", rating: 4, image: "/static/sanitizer.webp" },
+
             ]
         };
-
+    
         function showCategory(category) {
             const grid = document.getElementById("product-grid");
             grid.innerHTML = '';
@@ -225,22 +231,57 @@
                         <p class="price">${product.price}</p>
                         <p class="quantity">${product.quantity}</p>
                         <div class="ratings">${'⭐'.repeat(product.rating)}</div>
-                        <button class="add-to-cart">Add to Cart</button>
+                        <button class="add-to-cart" onclick='addToCart(${JSON.stringify(product)})'>Add to Cart</button>
                     </div>
                 </div>`;
             });
         }
-
+    
+        // Function to add product to cart
+        function addToCart(product) {
+            let cart = JSON.parse(localStorage.getItem('cart')) || [];
+            cart.push(product);
+            localStorage.setItem('cart', JSON.stringify(cart));
+    
+            // Redirect to the cart page
+            window.location.href = "/cart";  // Ensure this is correct
+        }
+    
+        // Add product to the current category
+        function addProduct() {
+            const name = document.getElementById("product-name").value;
+            const price = document.getElementById("product-price").value;
+            const quantity = document.getElementById("product-quantity").value;
+            const rating = document.getElementById("product-rating").value;
+            const image = document.getElementById("product-image").files[0];
+    
+            if (name && price && quantity && rating && image) {
+                const reader = new FileReader();
+                reader.onloadend = () => {
+                    const newProduct = {
+                        name,
+                        price,
+                        quantity,
+                        rating: parseInt(rating),
+                        image: reader.result
+                    };
+    
+                    // Add the new product to the current category
+                    productData.medicals.push(newProduct);
+                    showCategory('medicals'); // Refresh the product grid to show the new product
+                    toggleForm(); // Hide the form after adding the product
+                };
+                reader.readAsDataURL(image);
+            }
+        }
+    
         function toggleForm() {
             const form = document.getElementById("product-form");
-            form.style.display = (form.style.display === "none" || form.style.display === "") ? "block" : "none";
+            form.style.display = form.style.display === "none" ? "block" : "none";
         }
-
-        function addProduct() {
-            alert("This function will add a product dynamically.");
-        }
-
+    
         showCategory('medicals');
     </script>
+    
 </body>
 </html>
