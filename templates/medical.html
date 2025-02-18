@@ -1,0 +1,372 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Medical History</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Inter', sans-serif;
+        }
+
+        body {
+            min-height: 100vh;
+            background: white;
+            display: flex;
+        }
+
+        .navbar {
+            width: 200px;
+            background-color: #002147;
+            padding: 20px 0;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            position: fixed;
+            left: 0;
+            top: 0;
+            bottom: 0;
+        }
+
+        .navbar a {
+            color: white;
+            text-decoration: none;
+            font-weight: bold;
+            font-size: 14px;
+            text-transform: uppercase;
+            padding: 15px 20px;
+            width: 100%;
+            text-align: center;
+        }
+
+        .navbar a:hover {
+            background-color: #2a5298;
+        }
+
+        .content {
+            margin-left: 220px;
+            width: 100%;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            padding: 40px;
+        }
+
+        .card {
+            background: white;
+            width: 90%;
+            max-width: 800px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            padding: 20px;
+            border-radius: 10px;
+            margin-bottom: 20px;
+        }
+
+        .card-header {
+            text-align: center;
+            background: #002147;
+            color: white;
+            padding: 15px;
+            border-radius: 10px 10px 0 0;
+            font-size: 18px;
+            font-weight: bold;
+        }
+
+        .card-content {
+            padding: 15px;
+            background: #B0E0E6;
+            border-radius: 0 0 10px 10px;
+        }
+
+        .history-list {
+            list-style: none;
+            padding: 0;
+        }
+
+        .history-item {
+            padding: 10px;
+            background: white;
+            border-radius: 5px;
+            margin: 8px 0;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .btn-container {
+            text-align: center;
+            margin-top: 10px;
+        }
+
+        .btn {
+            background-color: #28a745;
+            color: white;
+            padding: 8px 15px;
+            border-radius: 5px;
+            font-size: 14px;
+            cursor: pointer;
+            border: none;
+        }
+
+        .btn:hover {
+            background-color: #218838;
+        }
+
+        input, textarea {
+            width: 100%;
+            padding: 8px;
+            margin-top: 5px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+        }
+
+        .save-btn {
+            background-color: #007bff;
+        }
+
+        .save-btn:hover {
+            background-color: #0069d9;
+        }
+
+        .edit-btn {
+            background-color: #ffca28;
+        }
+
+        .edit-btn:hover {
+            background-color: #fbc02d;
+        }
+
+        .delete-btn {
+            background-color: #dc3545;
+        }
+
+        .delete-btn:hover {
+            background-color: #c82333;
+        }
+    </style>
+</head>
+<body>
+    <div class="navbar">
+        <a href=/profile>Profile</a>
+        <a href=/emergencycon>Emergency Contacts</a>
+        <a href=/market>Your Marketplace</a>
+        <a href=/details>Details</a>
+    </div>
+
+    <div class="content">
+        <!-- SOS History Section -->
+        <div class="card">
+            <div class="card-header">🆘 SOS Alert History</div>
+            <div class="card-content">
+                <button class="btn" onclick="toggleSOSHistory()">View History</button>
+                <ul id="sosList" class="history-list" style="display: none;"></ul>
+            </div>
+        </div>
+
+        <!-- Medical Consultations Section -->
+        <div class="card">
+            <div class="card-header">🏥 Medical Consultations</div>
+            <div class="card-content">
+                <button class="btn" onclick="toggleConsultHistory()">View History</button>
+                <ul id="consultList" class="history-list" style="display: none;"></ul>
+            </div>
+        </div>
+
+        <!-- Chronic Conditions Section -->
+        <div class="card">
+            <div class="card-header">🩺 Chronic Conditions & Allergies</div>
+            <div class="card-content">
+                <ul id="conditionsList" class="history-list"></ul>
+                <div id="conditionsInputContainer" style="display: none;">
+                    <input type="text" id="conditionInput" placeholder="Enter a chronic condition or allergy">
+                    <button class="btn save-btn" onclick="addCondition()">Add</button>
+                </div>
+                <button id="editConditionsBtn" class="btn edit-btn" onclick="toggleEditConditions()">Edit</button>
+                <button id="saveConditionsBtn" class="btn save-btn" onclick="saveConditions()" style="display: none;">Save</button>
+                <button id="addConditionBtn" class="btn" onclick="showAddConditionInput()">Add Condition</button>
+            </div>
+        </div>
+
+        <!-- Medications Section -->
+        <div class="card">
+            <div class="card-header">💊 Medications</div>
+            <div class="card-content">
+                <ul id="medicationsList" class="history-list">
+                    <!-- List is initially empty, will be populated by JavaScript -->
+                </ul>
+                <div id="medicationsInputContainer" style="display: none;">
+                    <input type="text" id="medicationInput" placeholder="Enter new medication">
+                    <input type="text" id="dosageInput" placeholder="Dosage">
+                    <input type="text" id="conditionInputMedication" placeholder="Condition for which medication was taken">
+                    <input type="text" id="datesInput" placeholder="Dates taken (from and to)">
+                    <button class="btn save-btn" onclick="addMedication()">Add</button>
+                </div>
+                <button id="editMedicationsBtn" class="btn edit-btn" onclick="toggleEditMedications()">Edit</button>
+                <button id="saveMedicationsBtn" class="btn save-btn" onclick="saveMedications()" style="display: none;">Save</button>
+                <button id="addMedicationBtn" class="btn" onclick="showAddMedicationInput()">Add Medication</button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        document.addEventListener("DOMContentLoaded", function () {
+            loadHistory("sosList");
+            loadHistory("consultList");
+            loadHistory("medicationsList");
+            loadHistory("conditionsList");
+        });
+
+        function toggleSOSHistory() {
+            let list = document.getElementById("sosList");
+            if (list.style.display === "none") {
+                list.style.display = "block";
+                loadHistory("sosList");
+            } else {
+                list.style.display = "none";
+            }
+        }
+
+        function toggleConsultHistory() {
+            let list = document.getElementById("consultList");
+            if (list.style.display === "none") {
+                list.style.display = "block";
+                loadHistory("consultList");
+            } else {
+                list.style.display = "none";
+            }
+        }
+
+        function loadHistory(listId) {
+            let list = document.getElementById(listId);
+            list.innerHTML = "";
+            let savedItems = JSON.parse(localStorage.getItem(listId)) || [];
+            savedItems.forEach(item => {
+                let li = document.createElement("li");
+                li.className = "history-item";
+                if (typeof item === "string") {
+                    li.textContent = item;
+                } else {
+                    li.textContent = `Name: ${item.name}, Date: ${item.date}, Time: ${item.time}, Hospital: ${item.hospital}`;
+                }
+                list.appendChild(li);
+
+                // Add delete button
+                let deleteBtn = document.createElement("button");
+                deleteBtn.textContent = "Delete";
+                deleteBtn.className = "btn delete-btn";
+                deleteBtn.onclick = function () {
+                    deleteItem(listId, item);
+                    li.remove();
+                };
+                li.appendChild(deleteBtn);
+            });
+        }
+
+        function deleteItem(listId, item) {
+            let savedItems = JSON.parse(localStorage.getItem(listId)) || [];
+            const index = savedItems.indexOf(item);
+            if (index > -1) {
+                savedItems.splice(index, 1);
+                localStorage.setItem(listId, JSON.stringify(savedItems));
+            }
+        }
+
+        // Chronic Conditions Section
+        function toggleEditConditions() {
+            let conditionsList = document.getElementById("conditionsList");
+            let editBtn = document.getElementById("editConditionsBtn");
+            let saveBtn = document.getElementById("saveConditionsBtn");
+
+            if (conditionsList.contentEditable === "true") {
+                conditionsList.contentEditable = "false";
+                saveBtn.style.display = "none";
+                editBtn.style.display = "inline-block";
+                saveConditions();  // Automatically save when editing is turned off
+            } else {
+                conditionsList.contentEditable = "true";
+                saveBtn.style.display = "inline-block";
+                editBtn.style.display = "none";
+            }
+        }
+
+        function showAddConditionInput() {
+            document.getElementById("conditionsInputContainer").style.display = "block";
+        }
+
+        function addCondition() {
+            let condition = document.getElementById("conditionInput").value;
+            if (condition) {
+                let conditionsList = document.getElementById("conditionsList");
+                let li = document.createElement("li");
+                li.textContent = condition;
+                conditionsList.appendChild(li);
+                saveConditions();
+                document.getElementById("conditionInput").value = "";
+            }
+        }
+
+        function saveConditions() {
+            let conditionsList = document.getElementById("conditionsList");
+            let conditions = [];
+            conditionsList.querySelectorAll("li").forEach(li => {
+                conditions.push(li.textContent);
+            });
+            localStorage.setItem("conditionsList", JSON.stringify(conditions));
+        }
+
+        // Medications Section
+        function showAddMedicationInput() {
+            document.getElementById("medicationsInputContainer").style.display = "block";
+        }
+
+        function addMedication() {
+            let medication = document.getElementById("medicationInput").value;
+            let dosage = document.getElementById("dosageInput").value;
+            let condition = document.getElementById("conditionInputMedication").value;
+            let dates = document.getElementById("datesInput").value;
+            if (medication && dosage && condition && dates) {
+                let medicationsList = document.getElementById("medicationsList");
+                let li = document.createElement("li");
+                li.textContent = `${medication} - ${dosage} - ${condition} - ${dates}`;
+                medicationsList.appendChild(li);
+                saveMedications();
+                document.getElementById("medicationInput").value = "";
+                document.getElementById("dosageInput").value = "";
+                document.getElementById("conditionInputMedication").value = "";
+                document.getElementById("datesInput").value = "";
+            }
+        }
+
+        function toggleEditMedications() {
+            let medicationsList = document.getElementById("medicationsList");
+            let editBtn = document.getElementById("editMedicationsBtn");
+            let saveBtn = document.getElementById("saveMedicationsBtn");
+
+            if (medicationsList.contentEditable === "true") {
+                medicationsList.contentEditable = "false";
+                saveBtn.style.display = "none";
+                editBtn.style.display = "inline-block";
+                saveMedications();
+            } else {
+                medicationsList.contentEditable = "true";
+                saveBtn.style.display = "inline-block";
+                editBtn.style.display = "none";
+            }
+        }
+
+        function saveMedications() {
+            let medicationsList = document.getElementById("medicationsList");
+            let medications = [];
+            medicationsList.querySelectorAll("li").forEach(li => {
+                medications.push(li.textContent);
+            });
+            localStorage.setItem("medicationsList", JSON.stringify(medications));
+        }
+    </script>
+</body>
+</html>

@@ -1,6 +1,6 @@
 from flask import Flask,render_template
 app=Flask(__name__)
-@app.route("/")
+@app.route("/profile")
 def index():
     return render_template("profile.html")
 
@@ -15,6 +15,10 @@ def emergencycon():
 @app.route("/market")
 def market():
     return render_template("market.html")
+
+@app.route("/medical")
+def medical():
+    return render_template("medical.html")
 
 if __name__=="__main__":
     app.run(debug=True)

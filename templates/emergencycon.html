@@ -173,10 +173,10 @@
 </head>
 <body>
     <div class="navbar">
-        <a href="#">Back</a>
-        <a href="#">Profile</a>
+        <a href=/profile>Profile</a>
+        <a href=/details>Details</a>
         <a href="#">Medical History</a>
-        <a href="#">Your Marketplace</a>
+        <a href=/market>Your Marketplace</a>
     </div>
 
     <div class="container">
@@ -225,5 +225,55 @@
 
     <!-- Button to add a new emergency contact -->
     <a href="#" class="add-contact-btn">Add Emergency Contact</a>
+<!-- Add this after the existing "Add Emergency Contact" button -->
+<div id="contact-form" style="display: none; position: fixed; bottom: 80px; right: 20px; background: white; padding: 20px; border-radius: 8px; box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);">
+    <h3 style="color: #1e3c72; margin-bottom: 10px;">Add Contact</h3>
+    <input type="text" id="name" placeholder="Name" required style="width: 100%; margin-bottom: 10px; padding: 8px;">
+    <input type="text" id="relationship" placeholder="Relationship" required style="width: 100%; margin-bottom: 10px; padding: 8px;">
+    <input type="tel" id="phone" placeholder="Phone Number" required style="width: 100%; margin-bottom: 10px; padding: 8px;">
+    <button id="save-contact" style="background-color: #1e3c72; color: white; padding: 8px 20px; border: none; border-radius: 5px; cursor: pointer;">Save</button>
+    <button id="close-form" style="background-color: red; color: white; padding: 8px 20px; border: none; border-radius: 5px; cursor: pointer; margin-left: 10px;">Cancel</button>
+</div>
+
+<script>
+    document.querySelector(".add-contact-btn").addEventListener("click", function() {
+        document.getElementById("contact-form").style.display = "block";
+    });
+
+    document.getElementById("close-form").addEventListener("click", function() {
+        document.getElementById("contact-form").style.display = "none";
+    });
+
+    document.getElementById("save-contact").addEventListener("click", function() {
+        let name = document.getElementById("name").value;
+        let relationship = document.getElementById("relationship").value;
+        let phone = document.getElementById("phone").value;
+
+        if (name && relationship && phone) {
+            let contactList = document.querySelector(".contact-list");
+
+            let contactCard = document.createElement("div");
+            contactCard.classList.add("contact-card");
+            contactCard.innerHTML = `
+                <h3>${name}</h3>
+                <p>Relationship: ${relationship}</p>
+                <p class="phone">Phone: ${phone}</p>
+                <a href="tel:${phone}" class="button">Call Now</a>
+                <button class="edit-btn">Edit Contact</button>
+            `;
+
+            contactList.appendChild(contactCard);
+            document.getElementById("contact-form").style.display = "none";
+
+            // Clear input fields
+            document.getElementById("name").value = "";
+            document.getElementById("relationship").value = "";
+            document.getElementById("phone").value = "";
+        } else {
+            alert("Please fill in all fields.");
+        }
+    });
+</script>
+
 </body>
 </html>

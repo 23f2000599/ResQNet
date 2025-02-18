@@ -115,23 +115,6 @@
             color: #333;
         }
 
-        .progress-bar-container {
-            width: 100%;
-            height: 20px;
-            background-color: #f0f0f0;
-            border-radius: 10px;
-            margin-top: 10px;
-            overflow: hidden;
-        }
-
-        .progress-bar {
-            height: 100%;
-            background: linear-gradient(to right, #4caf50, #8bc34a);
-            border-radius: 10px;
-            width: 0%;
-            transition: width 1s ease;
-        }
-
         .transaction-btn {
             background-color: #28a745; /* Green background */
             color: white;
@@ -201,31 +184,28 @@
 <body>
 
     <div class="navbar">
-        <a href="#">Back</a>
+        <a href=/profile>Profile</a>
         <a href="#">Medical History</a>
-        <a href="#">Emergency Contacts</a>
-        <a href="#">Profile</a>
+        <a href=/emergencycon>Emergency Contacts</a>
+        <a href=/details>Details</a>
     </div>
 
     <div class="content">
         <div class="marketplace-header">
             <h1>Your Marketplace</h1>
-            <p>Manage your items, borrow and lend with ease</p>
+            <p>Manage your items, buy and sell with ease</p>
         </div>
 
-        <!-- Items Currently Lent Out Section -->
+        <!-- Items Bought From Section -->
         <div class="marketplace-section">
-            <h2 class="section-title" onclick="toggleSection('lent-out-items')">
-                Items Currently Lent Out
+            <h2 class="section-title" onclick="toggleSection('bought-from-items')">
+                Items Bought From
                 <span class="arrow">&#9660;</span>
             </h2>
-            <div id="lent-out-items" class="toggle-content">
+            <div id="bought-from-items" class="toggle-content">
                 <div class="item-card">
                     <div class="item-title">Laptop</div>
-                    <div class="item-info">Lent to: John Doe | Due Date: 10/10/2025</div>
-                    <div class="progress-bar-container">
-                        <div class="progress-bar" style="width: 60%"></div>
-                    </div>
+                    <div class="item-info">Bought From: John Doe | Purchase Date: 10/10/2025</div>
                     <button class="transaction-btn" onclick="toggleTransactionDetails('transaction-details-laptop')">View Transaction</button>
                     <div id="transaction-details-laptop" class="transaction-details">
                         <p>Name: John Doe</p>
@@ -235,10 +215,7 @@
                 </div>
                 <div class="item-card">
                     <div class="item-title">Camera</div>
-                    <div class="item-info">Lent to: Sarah Lee | Due Date: 15/10/2025</div>
-                    <div class="progress-bar-container">
-                        <div class="progress-bar" style="width: 80%"></div>
-                    </div>
+                    <div class="item-info">Bought From: Sarah Lee | Purchase Date: 15/10/2025</div>
                     <button class="transaction-btn" onclick="toggleTransactionDetails('transaction-details-camera')">View Transaction</button>
                     <div id="transaction-details-camera" class="transaction-details">
                         <p>Name: Sarah Lee</p>
@@ -249,19 +226,16 @@
             </div>
         </div>
 
-        <!-- Items Currently Borrowed Section -->
+        <!-- Items Sold To Section -->
         <div class="marketplace-section">
-            <h2 class="section-title" onclick="toggleSection('borrowed-items')">
-                Items Currently Borrowed
+            <h2 class="section-title" onclick="toggleSection('sold-to-items')">
+                Items Sold To
                 <span class="arrow">&#9660;</span>
             </h2>
-            <div id="borrowed-items" class="toggle-content">
+            <div id="sold-to-items" class="toggle-content">
                 <div class="item-card">
                     <div class="item-title">Projector</div>
-                    <div class="item-info">Borrowed from: Mike Smith | Due Date: 12/10/2025</div>
-                    <div class="progress-bar-container">
-                        <div class="progress-bar" style="width: 45%"></div>
-                    </div>
+                    <div class="item-info">Sold To: Mike Smith | Sale Date: 12/10/2025</div>
                     <button class="transaction-btn" onclick="toggleTransactionDetails('transaction-details-projector')">View Transaction</button>
                     <div id="transaction-details-projector" class="transaction-details">
                         <p>Name: Mike Smith</p>
@@ -271,10 +245,7 @@
                 </div>
                 <div class="item-card">
                     <div class="item-title">Headphones</div>
-                    <div class="item-info">Borrowed from: Alice Green | Due Date: 14/10/2025</div>
-                    <div class="progress-bar-container">
-                        <div class="progress-bar" style="width: 30%"></div>
-                    </div>
+                    <div class="item-info">Sold To: Alice Green | Sale Date: 14/10/2025</div>
                     <button class="transaction-btn" onclick="toggleTransactionDetails('transaction-details-headphones')">View Transaction</button>
                     <div id="transaction-details-headphones" class="transaction-details">
                         <p>Name: Alice Green</p>
@@ -294,7 +265,7 @@
             <div id="past-transactions" class="toggle-content">
                 <div class="item-card">
                     <div class="item-title">Smartphone</div>
-                    <div class="item-info">Borrowed from: Alex Brown | Returned on: 01/09/2025</div>
+                    <div class="item-info">Bought From: Alex Brown | Purchase Date: 01/09/2025</div>
                     <button class="transaction-btn" onclick="toggleTransactionDetails('transaction-details-smartphone')">View Transaction</button>
                     <div id="transaction-details-smartphone" class="transaction-details">
                         <p>Name: Alex Brown</p>

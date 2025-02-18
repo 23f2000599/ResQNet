@@ -3,22 +3,20 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Details</title>
+    <title>Profile</title>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
     <style>
         * {
             margin: 0;
             padding: 0;
             box-sizing: border-box;
-            font-family: 'Times New Roman', serif;
+            font-family: 'Inter', sans-serif;
         }
 
         body {
             min-height: 100vh;
             background: white;
-            padding: 0;
             display: flex;
-            position: relative;
         }
 
         .navbar {
@@ -61,43 +59,26 @@
 
         .profile-card {
             background: white;
-            border-radius: 0;
             width: 90%;
-            max-width: 1000px;
+            max-width: 600px;
             box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-            margin-top: 20px;
-        }
-
-        .profile-header {
-            display: flex;
-            gap: 20px;
-            padding: 30px;
-            background: #002147;
-        }
-
-        .profile-image-container {
-            width: 200px;
-            flex-shrink: 0;
-        }
-
-        .profile-image {
-            width: 200px;
-            height: 200px;
-            object-fit: cover;
+            padding: 20px;
             border-radius: 10px;
         }
 
-        .profile-info {
-            flex-grow: 1;
-            display: flex;
-            flex-direction: column;
-            justify-content: center;
+        .profile-header {
+            text-align: center;
+            background: #002147;
+            color: white;
+            padding: 20px;
+            border-radius: 10px 10px 0 0;
         }
 
-        .name {
-            font-size: 24px;
-            font-weight: 600;
-            color: white;
+        .profile-image {
+            width: 120px;
+            height: 120px;
+            border-radius: 50%;
+            object-fit: cover;
             margin-bottom: 10px;
         }
 
@@ -105,6 +86,7 @@
             padding: 20px;
             background: #B0E0E6;
             border-radius: 5px;
+            margin-top: 10px;
         }
 
         .detail-item {
@@ -115,88 +97,137 @@
         }
 
         .detail-label {
-            color: black;
-            font-weight: 500;
+            font-weight: 600;
             min-width: 120px;
         }
 
         .detail-value {
-            color: black;
             font-size: 16px;
         }
 
-        .edit-btn {
-            background-color: #28a745; /* Green background */
+        input {
+            padding: 5px;
+            font-size: 16px;
+            width: 100%;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            display: none;
+        }
+
+        .btn-container {
+            text-align: center;
+            margin-top: 20px;
+        }
+
+        .btn {
+            background-color: #28a745;
             color: white;
             padding: 8px 20px;
             border-radius: 5px;
             font-size: 14px;
             cursor: pointer;
-            text-decoration: none;
-            position: fixed;
-            bottom: 20px;
-            right: 20px;
-            z-index: 10;
+            border: none;
+            margin: 5px;
         }
 
-        .edit-btn:hover {
-            background-color: #218838; /* Darker green on hover */
-        }
-
-        @media (max-width: 600px) {
-            .profile-header {
-                flex-direction: column;
-                align-items: center;
-                text-align: center;
-            }
+        .btn:hover {
+            background-color: #218838;
         }
     </style>
 </head>
 <body>
     <div class="navbar">
-        <a href="#">Back</a>
-        <a href="#">Emergency Contacts</a>
-        <a href="#">Your Marketplace</a>
+        <a href="/profile">Profile</a>
+        <a href="/emergencycon">Emergency Contacts</a>
+        <a href="/details">Your Marketplace</a>
         <a href="#">Medical History</a>
     </div>
 
     <div class="content">
         <div class="profile-card">
             <div class="profile-header">
-                <div class="profile-image-container">
-                    <img src="https://hebbkx1anhila5yf.public.blob.vercel-storage.com/image-NpotY97dz0rAIIhSI9pMmYoSAAEWwt.png" alt="Profile" class="profile-image">
-                </div>
-                
-                <div class="profile-info">
-                    <h1 class="name">Andy Pena</h1>
-                </div>
+                <img src="https://hebbkx1anhila5yf.public.blob.vercel-storage.com/image-NpotY97dz0rAIIhSI9pMmYoSAAEWwt.png" alt="Profile" class="profile-image">
+                <h1 id="profileName">Andy Pena</h1>
             </div>
 
             <div class="details">
                 <div class="detail-item">
                     <span class="detail-label">Name:</span>
-                    <span class="detail-value">Andy Pena</span>
+                    <span class="detail-value" id="nameText">Andy Pena</span>
+                    <input type="text" id="nameInput">
                 </div>
                 <div class="detail-item">
                     <span class="detail-label">Date of Birth:</span>
-                    <span class="detail-value">01/01/1990</span>
+                    <span class="detail-value" id="dobText">01/01/1990</span>
+                    <input type="date" id="dobInput">
                 </div>
                 <div class="detail-item">
                     <span class="detail-label">Address:</span>
-                    <span class="detail-value">1234 Main Street, Springfield</span>
+                    <span class="detail-value" id="addressText">1234 Main Street, Springfield</span>
+                    <input type="text" id="addressInput">
                 </div>
                 <div class="detail-item">
                     <span class="detail-label">Email:</span>
-                    <span class="detail-value">andy.pena@example.com</span>
+                    <span class="detail-value" id="emailText">andy.pena@example.com</span>
+                    <input type="email" id="emailInput">
                 </div>
                 <div class="detail-item">
-                    <span class="detail-label">Phone Number:</span>
-                    <span class="detail-value">+1 333 548 3455</span>
+                    <span class="detail-label">Phone:</span>
+                    <span class="detail-value" id="phoneText">+1 333 548 3455</span>
+                    <input type="text" id="phoneInput">
                 </div>
+                <div class="detail-item">
+                    <span class="detail-label">Password:</span>
+                    <span class="detail-value" id="passwordText">********</span>
+                    <input type="password" id="passwordInput">
+                </div>
+            </div>
+
+            <div class="btn-container">
+                <button class="btn" id="editBtn">Edit</button>
+                <button class="btn" id="saveBtn" style="display: none;">Save</button>
             </div>
         </div>
     </div>
 
-    <a href="#" class="edit-btn">Edit Profile</a> <!-- Edit Button -->
+    <script>
+        document.addEventListener("DOMContentLoaded", function () {
+            const fields = ["name", "dob", "address", "email", "phone", "password"];
+
+            function loadProfile() {
+                fields.forEach(field => {
+                    const storedValue = localStorage.getItem(field);
+                    if (storedValue) {
+                        document.getElementById(field + "Text").textContent = field === "password" ? "********" : storedValue;
+                        document.getElementById(field + "Input").value = storedValue;
+                    }
+                });
+            }
+
+            function toggleEditMode(editing) {
+                fields.forEach(field => {
+                    document.getElementById(field + "Text").style.display = editing ? "none" : "inline";
+                    document.getElementById(field + "Input").style.display = editing ? "inline" : "none";
+                });
+                document.getElementById("editBtn").style.display = editing ? "none" : "inline";
+                document.getElementById("saveBtn").style.display = editing ? "inline" : "none";
+            }
+
+            document.getElementById("editBtn").addEventListener("click", function () {
+                toggleEditMode(true);
+            });
+
+            document.getElementById("saveBtn").addEventListener("click", function () {
+                fields.forEach(field => {
+                    const newValue = document.getElementById(field + "Input").value;
+                    localStorage.setItem(field, newValue);
+                    document.getElementById(field + "Text").textContent = field === "password" ? "********" : newValue;
+                });
+                toggleEditMode(false);
+            });
+
+            loadProfile();
+        });
+    </script>
 </body>
 </html>
