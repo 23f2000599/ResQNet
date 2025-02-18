@@ -59,21 +59,46 @@
         .btn:hover {
             background-color: #0056b3;
         }
+        .forgot-password {
+            margin-top: 10px;
+        }
+        .forgot-password a {
+            color: #007BFF;
+            text-decoration: none;
+        }
+        .forgot-password a:hover {
+            text-decoration: underline;
+        }
     </style>
+    <script>
+        function login(event) {
+    event.preventDefault(); // Prevent default form submission
+
+    // Get the values entered in the input fields
+    let username = document.getElementById("username").value;
+    let password = document.getElementById("password").value;
+
+    // No validation for now, just show success
+    alert("Login successful! Redirecting to home page.");
+    window.location.href = "/home"; // Redirect to home page (can be modified)
+}
+
+    </script>
 </head>
 <body>
     <div class="container">
-        <div class="image-container">
-
-        </div>
+        <div class="image-container"></div>
         <div class="form-container">
             <h2>Login</h2>
             <p>Welcome back! Please enter your credentials to continue.</p>
-            <form action="dashboard.html" method="POST">
-                <input type="text" placeholder="Username" required><br>
-                <input type="password" placeholder="Password" required><br>
+            <form  onsubmit="login(event)">
+                <input type="text" id="username" placeholder="Username" required><br>
+                <input type="password" id="password" placeholder="Password" required><br>
                 <button type="submit" class="btn">Login</button>
             </form>
+            <div class="forgot-password">
+                <p><a href="\forgotpass">Forgot Password?</a></p>
+            </div>
         </div>
     </div>
 </body>
