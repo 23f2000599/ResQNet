@@ -1,0 +1,153 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Profile</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: serif;
+        }
+
+        body {
+            display: flex;
+            min-height: 100vh;
+        }
+
+        .sidebar {
+            width: 200px;
+            background-color: #002147;
+            color: white;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .sidebar-item {
+            padding: 20px;
+            text-align: center;
+            color: white;
+            text-decoration: none;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+            font-size: 14px;
+        }
+
+        .sidebar-item:hover {
+            background-color: rgba(255, 255, 255, 0.1);
+        }
+
+        .main-content {
+            flex-grow: 1;
+            background: url("/static/details.jpeg") center/cover no-repeat;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            text-align: center;
+        }
+
+        .welcome-text {
+            font-size: 48px;
+            color: #333;
+            letter-spacing: 4px;
+            margin-bottom: 20px;
+        }
+
+        .subtext {
+            font-size: 24px;
+            color: #444;
+            font-style: italic;
+        }
+        body {
+        margin: 0;
+        padding-top: 60px; /* Padding only for main navbar */
+    }
+
+    .main-navbar {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        background: #2e406b;
+        padding: 10px 20px;
+        color: white;
+        position: fixed;
+        top: 0;
+        left: 0;
+        right: 0;
+        z-index: 1000;
+    }
+
+    .main-navbar img {
+        height: 40px;
+    }
+
+    .nav-links button {
+        background: none;
+        border: none;
+        color: white;
+        margin: 0 10px;
+        cursor: pointer;
+        font-size: 16px;
+    }
+
+    .nav-links button:hover {
+        text-decoration: underline;
+    }
+
+    .secondary-navbar {
+        display: flex;
+        flex-direction: column;
+        background: #3a507d;
+        padding: 20px;
+        position: fixed;
+        top: 60px; /* Position it below the main navbar */
+        left: 0;
+        width: 200px;
+        bottom: 0;
+        z-index: 999;
+    }
+
+    .secondary-navbar a {
+        color: white;
+        text-decoration: none;
+        padding: 10px 0;
+        font-size: 16px;
+    }
+
+    .secondary-navbar a:hover {
+        text-decoration: underline;
+    }
+
+    /* Adjust main content to accommodate side navbar */
+    .content {
+        margin-left: 220px; /* Width of secondary navbar + some spacing */
+        padding: 20px;
+    }
+</style>
+
+<body>
+    <div class="main-navbar">
+        <img src="static/logo.jpg" alt="Logo">
+        <div class="nav-links">
+            <button onclick="location.href='/sos'">SOS</button>
+            <button onclick="location.href='/marketpage'">Marketplace</button>
+            <button onclick="location.href='/safezone'">Safezone</button>
+            <button onclick="location.href='/details'">Profile</button>
+        </div>
+    </div>
+    
+    <div class="secondary-navbar">
+        <a href="/details">Profile</a>
+        <a href="/medical">Medical History</a>
+        <a href="/emergencycon">Emergency Contacts</a>
+        <a href="/details">Details</a>
+    </div>
+    <main class="main-content">
+        <h1 class="welcome-text">WELCOME Y/N</h1>
+        <p class="subtext">help is coming</p>
+    </main>
+</body>
+</html>
+

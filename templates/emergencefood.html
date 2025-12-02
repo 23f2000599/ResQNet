@@ -1,0 +1,592 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Emergence Foods - Marketplace</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <script src="https://unpkg.com/lucide@latest"></script>
+    <style>
+        :root {
+            --primary: #4F46E5;
+            --primary-dark: #4338CA;
+            --secondary: #10B981;
+            --secondary-dark: #059669;
+            --background: #F3F4F6;
+            --surface: #FFFFFF;
+            --text: #1F2937;
+            --text-light: #6B7280;
+            --danger: #EF4444;
+            --danger-light: #FEE2E2;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            background: linear-gradient(135deg, #EEF2FF 0%, #E0E7FF 100%);
+            color: var(--text);
+            min-height: 100vh;
+        }
+
+        /* Navigation */
+        .navbar {
+            background: var(--surface);
+            box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            z-index: 50;
+        }
+
+        .nav-container {
+            max-width: 1280px;
+            margin: 0 auto;
+            padding: 0 1rem;
+            height: 64px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .nav-brand {
+            font-size: 1.25rem;
+            font-weight: 700;
+            color: var(--primary);
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .nav-links {
+            display: flex;
+            gap: 1rem;
+        }
+
+        .nav-link {
+            color: var(--text-light);
+            text-decoration: none;
+            font-weight: 500;
+            padding: 0.5rem 1rem;
+            border-radius: 0.5rem;
+            transition: all 0.2s;
+        }
+
+        .nav-link:hover {
+            color: var(--primary);
+            background: #F3F4F6;
+        }
+
+        /* Sidebar */
+        .sidebar {
+            position: fixed;
+            left: 0;
+            top: 64px;
+            bottom: 0;
+            width: 240px;
+            background: var(--surface);
+            border-right: 1px solid #E5E7EB;
+            padding: 1.5rem;
+            overflow-y: auto;
+        }
+
+        .category-list {
+            display: flex;
+            flex-direction: column;
+            gap: 0.5rem;
+        }
+
+        .category-button {
+            padding: 0.75rem 1rem;
+            border: none;
+            background: none;
+            color: var(--text-light);
+            font-weight: 500;
+            border-radius: 0.5rem;
+            cursor: pointer;
+            transition: all 0.2s;
+            text-align: left;
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+        }
+
+        .category-button:hover {
+            color: var(--primary);
+            background: #F3F4F6;
+        }
+
+        .category-button.active {
+            color: var(--primary);
+            background: #EEF2FF;
+        }
+
+        /* Main Content */
+        .main-content {
+            margin-left: 240px;
+            margin-top: 64px;
+            padding: 2rem;
+        }
+
+        .content-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 2rem;
+        }
+
+        .content-title {
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: var(--text);
+        }
+
+        .add-product-btn {
+            background: var(--primary);
+            color: white;
+            border: none;
+            padding: 0.75rem 1.5rem;
+            border-radius: 0.5rem;
+            font-weight: 500;
+            cursor: pointer;
+            transition: all 0.2s;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .add-product-btn:hover {
+            background: var(--primary-dark);
+        }
+
+        /* Product Grid */
+        .product-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+            gap: 1.5rem;
+        }
+
+        .product-card {
+            background: var(--surface);
+            border-radius: 1rem;
+            overflow: hidden;
+            transition: all 0.3s;
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+        }
+
+        .product-card:hover {
+            transform: translateY(-4px);
+            box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
+        }
+
+        .product-image {
+            width: 100%;
+            height: 200px;
+            object-fit: cover;
+        }
+
+        .product-details {
+            padding: 1.5rem;
+        }
+
+        .product-name {
+            font-size: 1.125rem;
+            font-weight: 600;
+            color: var(--text);
+            margin-bottom: 0.5rem;
+        }
+
+        .product-meta {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 1rem;
+        }
+
+        .product-price {
+            font-size: 1.25rem;
+            font-weight: 700;
+            color: var(--primary);
+        }
+
+        .product-quantity {
+            color: var(--text-light);
+            font-size: 0.875rem;
+        }
+
+        .product-rating {
+            color: #FBBF24;
+            display: flex;
+            gap: 0.25rem;
+            margin-bottom: 1rem;
+        }
+
+        .add-to-cart-btn {
+            width: 100%;
+            padding: 0.75rem;
+            background: var(--secondary);
+            color: white;
+            border: none;
+            border-radius: 0.5rem;
+            font-weight: 500;
+            cursor: pointer;
+            transition: all 0.2s;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 0.5rem;
+        }
+
+        .add-to-cart-btn:hover {
+            background: var(--secondary-dark);
+        }
+
+        /* Product Form */
+        .product-form-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: rgba(0, 0, 0, 0.5);
+            display: none;
+            justify-content: center;
+            align-items: center;
+            z-index: 100;
+        }
+
+        .product-form {
+            background: var(--surface);
+            padding: 2rem;
+            border-radius: 1rem;
+            width: 100%;
+            max-width: 480px;
+            box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04);
+        }
+
+        .form-title {
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: var(--text);
+            margin-bottom: 1.5rem;
+        }
+
+        .form-group {
+            margin-bottom: 1rem;
+        }
+
+        .form-label {
+            display: block;
+            font-size: 0.875rem;
+            font-weight: 500;
+            color: var(--text);
+            margin-bottom: 0.5rem;
+        }
+
+        .form-input {
+            width: 100%;
+            padding: 0.75rem;
+            border: 1px solid #E5E7EB;
+            border-radius: 0.5rem;
+            font-size: 1rem;
+            transition: all 0.2s;
+        }
+
+        .form-input:focus {
+            outline: none;
+            border-color: var(--primary);
+            box-shadow: 0 0 0 3px rgba(79, 70, 229, 0.1);
+        }
+
+        .form-actions {
+            display: flex;
+            gap: 1rem;
+            margin-top: 1.5rem;
+        }
+
+        .form-submit {
+            flex: 1;
+            padding: 0.75rem;
+            background: var(--primary);
+            color: white;
+            border: none;
+            border-radius: 0.5rem;
+            font-weight: 500;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+
+        .form-submit:hover {
+            background: var(--primary-dark);
+        }
+
+        .form-cancel {
+            flex: 1;
+            padding: 0.75rem;
+            background: var(--danger-light);
+            color: var(--danger);
+            border: none;
+            border-radius: 0.5rem;
+            font-weight: 500;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+
+        .form-cancel:hover {
+            background: #FEE2E2;
+        }
+
+        @media (max-width: 768px) {
+            .sidebar {
+                transform: translateX(-100%);
+                transition: transform 0.3s;
+            }
+
+            .sidebar.active {
+                transform: translateX(0);
+            }
+
+            .main-content {
+                margin-left: 0;
+            }
+
+            .nav-links {
+                display: none;
+            }
+
+            .mobile-menu-btn {
+                display: block;
+            }
+        }
+    </style>
+</head>
+<body>
+    <nav class="navbar">
+        <div class="nav-container">
+            <div class="nav-brand">
+                <i data-lucide="shopping-bag"></i>
+                Emergence Foods
+            </div>
+            <div class="nav-links">
+                <a href="/sos" class="nav-link">SOS</a>
+                <a href="/marketpage" class="nav-link">Marketplace</a>
+                <a href="/safezone" class="nav-link">Safezone</a>
+                <a href="/details" class="nav-link">Profile</a>
+            </div>
+        </div>
+    </nav>
+
+    <aside class="sidebar">
+        <div class="category-list">
+            <button class="category-button active" onclick="showCategory('drinks')">
+                <i data-lucide="coffee"></i>
+                Drinks
+            </button>
+            <button class="category-button" onclick="showCategory('diary')">
+                <i data-lucide="milk"></i>
+                Dairy Products
+            </button>
+            <button class="category-button" onclick="showCategory('chocolates')">
+                <i data-lucide="candy"></i>
+                Chocolates
+            </button>
+            <button class="category-button" onclick="showCategory('chips')">
+                <i data-lucide="cookie"></i>
+                Chips
+            </button>
+            <button class="category-button" onclick="showCategory('groceries')">
+                <i data-lucide="shopping-basket"></i>
+                Groceries
+            </button>
+        </div>
+    </aside>
+
+    <main class="main-content">
+        <div class="content-header">
+            <h1 class="content-title">Products</h1>
+            <button class="add-product-btn" onclick="toggleForm()">
+                <i data-lucide="plus"></i>
+                Add Product
+            </button>
+        </div>
+
+        <div class="product-grid" id="product-grid"></div>
+    </main>
+
+    <div class="product-form-overlay" id="product-form-overlay">
+        <div class="product-form">
+            <h2 class="form-title">Add New Product</h2>
+            <div class="form-group">
+                <label class="form-label" for="product-name">Product Name</label>
+                <input type="text" id="product-name" class="form-input" placeholder="Enter product name" required>
+            </div>
+            <div class="form-group">
+                <label class="form-label" for="product-price">Price (₹)</label>
+                <input type="number" id="product-price" class="form-input" placeholder="Enter price" required>
+            </div>
+            <div class="form-group">
+                <label class="form-label" for="product-quantity">Quantity</label>
+                <input type="text" id="product-quantity" class="form-input" placeholder="Enter quantity" required>
+            </div>
+            <div class="form-group">
+                <label class="form-label" for="product-rating">Rating</label>
+                <input type="number" id="product-rating" class="form-input" placeholder="Rating (1-5)" min="1" max="5" required>
+            </div>
+            <div class="form-group">
+                <label class="form-label" for="product-image">Product Image</label>
+                <input type="file" id="product-image" class="form-input" accept="image/*" required>
+            </div>
+            <div class="form-actions">
+                <button class="form-cancel" onclick="toggleForm()">Cancel</button>
+                <button class="form-submit" onclick="addProduct()">Add Product</button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Initialize Lucide icons
+        lucide.createIcons();
+
+        const productData = {
+            drinks: [
+                { name: "Water Bottles", price: "₹40", quantity: "500ml", rating: 4, image: "https://images.unsplash.com/photo-1523362628745-0c100150b504?w=400&q=80" },
+                { name: "Coca Cola", price: "₹35", quantity: "500ml", rating: 3, image: "https://images.unsplash.com/photo-1554866585-cd94860890b7?w=400&q=80" },
+                { name: "Pepsi", price: "₹45", quantity: "500ml", rating: 4, image: "https://images.unsplash.com/photo-1629203849820-fdd70d49c38e?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxzZWFyY2h8Mnx8cGVwc2l8ZW58MHx8MHx8&w=1000&q=80" },
+                { name: "Sprite", price: "₹40", quantity: "500ml", rating: 4, image: "https://images.unsplash.com/photo-1625772299848-391b6a87d7b3?w=400&q=80" },
+                { name: "ORS Juice", price: "₹50", quantity: "250ml", rating: 5, image: "https://images.unsplash.com/photo-1613478223719-2ab802602423?w=400&q=80" }
+            ],
+            diary: [
+                { name: "Milk", price: "₹30", quantity: "1L", rating: 4, image: "https://images.unsplash.com/photo-1550583724-b2692b85b150?w=400&q=80" },
+                { name: "Breads", price: "₹100", quantity: "250g", rating: 5, image: "https://images.unsplash.com/photo-1509440159596-0249088772ff?w=400&q=80" },
+                { name: "Buttermilk", price: "₹120", quantity: "200g", rating: 4, image: "https://images.unsplash.com/photo-1628088062854-d1870b4553da?w=400&q=80" },
+                { name: "Ghee", price: "₹50", quantity: "400g", rating: 5, image: "https://www.netmeds.com/images/cms/wysiwyg/blog/2019/01/ghee_health_898.jpg" },
+                { name: "Biscuits", price: "₹150", quantity: "500g", rating: 4, image: "https://images.unsplash.com/photo-1558961363-fa8fdf82db35?w=400&q=80" }
+            ],
+            chocolates: [
+                { name: "Diary Milk", price: "₹150", quantity: "100g", rating: 5, image: "/static/diarymilk.jpeg" },
+                { name: "Kit Kat", price: "₹200", quantity: "150g", rating: 4, image: "/static/kitkat.webp" },
+                { name: "Milky Bar", price: "₹250", quantity: "200g", rating: 4, image: "/static/milkybar.jpeg" },
+                { name: "Munch", price: "₹180", quantity: "150g", rating: 5, image: "/static/munch.jpg" },
+                { name: "Snickers", price: "₹220", quantity: "200g", rating: 4, image: "/static/snickers.jpg" }
+            ],
+            chips: [
+                { name: "Blue Lays", price: "₹20", quantity: "50g", rating: 4, image: "https://images.unsplash.com/photo-1566478989037-eec170784d0b?w=400&q=80" },
+                { name: "Cheetos", price: "₹20", quantity: "50g", rating: 3, image: "https://images.unsplash.com/photo-1613919113640-25732ec5e61f?w=400&q=80" },
+                { name: "Doritos", price: "₹30", quantity: "50g", rating: 4, image: "https://images.unsplash.com/photo-1599490659213-e2b9527bd087?w=400&q=80" },
+                { name: "Kurkure", price: "₹50", quantity: "100g", rating: 5, image: "https://images.unsplash.com/photo-1621447504864-d8686e12698c?w=400&q=80" },
+                { name: "Red Pringles", price: "₹40", quantity: "75g", rating: 3, image: "https://images.unsplash.com/photo-1600952841320-db92ec4047ca?w=400&q=80" }
+            ],
+            groceries: [
+                { name: "Rice", price: "₹120", quantity: "1kg", rating: 4, image: "https://images.unsplash.com/photo-1586201375761-83865001e31c?w=400&q=80" },
+                { name: "Aata Flour", price: "₹120", quantity: "1kg", rating: 5, image: "https://images.unsplash.com/photo-1574323347407-f5e1ad6d020b?w=400&q=80" },
+                { name: "Sugar", price: "₹120", quantity: "1kg", rating: 4, image: "https://media.istockphoto.com/photos/sugar-picture-id938479824?k=6&m=938479824&s=170667a&w=0&h=00cBCqYo6iPb3_4khdq0FunNADzZ4mkhGoRTE8Ah5so=" },
+                { name: "Salt", price: "₹90", quantity: "500g", rating: 5, image: "https://media.istockphoto.com/id/182792122/photo/salt-shaker.jpg?b=1&s=170667a&w=0&k=20&c=_dFvXt8aX3zVzI7PcgPV-RScFlTU5c11uFARfYMr01I=" },
+                { name: "Cooking Oil", price: "₹120", quantity: "1kg", rating: 3, image: "https://images.unsplash.com/photo-1474979266404-7eaacbcd87c5?w=400&q=80" }
+            ]
+        };
+
+        let currentCategory = 'drinks';
+
+        function showCategory(category) {
+            currentCategory = category;
+            // Update active state of category buttons
+            document.querySelectorAll('.category-button').forEach(button => {
+                button.classList.remove('active');
+                if (button.textContent.trim().toLowerCase().includes(category.toLowerCase())) {
+                    button.classList.add('active');
+                }
+            });
+            displayProducts();
+        }
+
+        function displayProducts() {
+            const productGrid = document.getElementById("product-grid");
+            productGrid.innerHTML = "";
+
+            productData[currentCategory].forEach(product => {
+                const productCard = document.createElement("div");
+                productCard.className = "product-card";
+                
+                productCard.innerHTML = `
+                    <img src="${product.image}" alt="${product.name}" class="product-image">
+                    <div class="product-details">
+                        <h3 class="product-name">${product.name}</h3>
+                        <div class="product-meta">
+                            <span class="product-price">${product.price}</span>
+                            <span class="product-quantity">${product.quantity}</span>
+                        </div>
+                        <div class="product-rating">
+                            ${Array(5).fill('').map((_, i) => 
+                                `<i data-lucide="${i < product.rating ? 'star' : 'star'}" 
+                                    style="color: ${i < product.rating ? '#FBBF24' : '#E5E7EB'};"></i>`
+                            ).join('')}
+                        </div>
+                        <button class="add-to-cart-btn" onclick="addToCart(${JSON.stringify(product).replace(/"/g, '&quot;')})">
+                            <i data-lucide="shopping-cart"></i>
+                            Add to Cart
+                        </button>
+                    </div>
+                `;
+
+                productGrid.appendChild(productCard);
+            });
+
+            // Reinitialize icons for new content
+            lucide.createIcons();
+        }
+
+        function toggleForm() {
+            const overlay = document.getElementById('product-form-overlay');
+            overlay.style.display = overlay.style.display === 'flex' ? 'none' : 'flex';
+        }
+
+        function addProduct() {
+            const name = document.getElementById("product-name").value;
+            const price = document.getElementById("product-price").value;
+            const quantity = document.getElementById("product-quantity").value;
+            const rating = parseInt(document.getElementById("product-rating").value);
+            const imageFile = document.getElementById("product-image").files[0];
+
+            if (name && price && quantity && rating && imageFile) {
+                const reader = new FileReader();
+                reader.onload = function(e) {
+                    const newProduct = {
+                        name,
+                        price: `₹${price}`,
+                        quantity,
+                        rating,
+                        image: e.target.result
+                    };
+
+                    productData[currentCategory].push(newProduct);
+                    displayProducts();
+                    toggleForm();
+
+                    // Reset form
+                    document.getElementById("product-name").value = '';
+                    document.getElementById("product-price").value = '';
+                    document.getElementById("product-quantity").value = '';
+                    document.getElementById("product-rating").value = '';
+                    document.getElementById("product-image").value = '';
+                };
+                reader.readAsDataURL(imageFile);
+            }
+        }
+
+        function addToCart(product) {
+            let cart = JSON.parse(localStorage.getItem('cart')) || [];
+            cart.push(product);
+            localStorage.setItem('cart', JSON.stringify(cart));
+            window.location.href = '/cart';
+        }
+
+        // Initialize the display
+        displayProducts();
+    </script>
+</body>
+</html>

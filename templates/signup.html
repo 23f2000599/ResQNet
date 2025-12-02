@@ -1,0 +1,323 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sign Up - SocialCare</title>
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap">
+    <style>
+        :root {
+            --primary-color: #6B46C1;
+            --secondary-color: #9F7AEA;
+            --accent-color: #B794F4;
+            --text-color: #2D3748;
+            --light-text: #FFFFFF;
+            --background: #F7FAFC;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Poppins', sans-serif;
+        }
+
+        body {
+            background: linear-gradient(135deg, #6B46C1 0%, #805AD5 100%);
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 2rem;
+            color: var(--text-color);
+        }
+
+        .container {
+            display: flex;
+            background-color: white;
+            border-radius: 1rem;
+            box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.25);
+            max-width: 1000px;
+            width: 95%;
+            overflow: hidden;
+        }
+
+        .image-container {
+            flex: 1;
+            background-image: url('/static/signup.png');
+            background-size: cover;
+            background-position: center;
+            position: relative;
+        }
+
+        .image-overlay {
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: rgba(107, 70, 193, 0.3);
+            backdrop-filter: blur(1px);
+        }
+
+        .form-container {
+            flex: 1;
+            padding: 2.5rem;
+            overflow-y: auto;
+            max-height: 90vh;
+        }
+
+        .form-header {
+            text-align: center;
+            margin-bottom: 2rem;
+        }
+
+        .form-header h2 {
+            color: var(--primary-color);
+            font-size: 2rem;
+            font-weight: 700;
+            margin-bottom: 0.5rem;
+        }
+
+        .form-header p {
+            color: var(--text-color);
+            opacity: 0.8;
+            font-size: 0.875rem;
+        }
+
+        .form-section {
+            margin-bottom: 1.5rem;
+        }
+
+        .form-section h3 {
+            color: var(--primary-color);
+            font-size: 1.125rem;
+            margin-bottom: 1rem;
+            font-weight: 600;
+        }
+
+        .input-group {
+            margin-bottom: 1rem;
+        }
+
+        .input-group label {
+            display: block;
+            font-size: 0.875rem;
+            color: var(--text-color);
+            margin-bottom: 0.5rem;
+            font-weight: 500;
+        }
+
+        input {
+            width: 100%;
+            padding: 0.75rem 1rem;
+            border: 1px solid #E2E8F0;
+            border-radius: 0.5rem;
+            font-size: 0.875rem;
+            transition: all 0.3s ease;
+            background-color: var(--background);
+        }
+
+        input:focus {
+            outline: none;
+            border-color: var(--primary-color);
+            box-shadow: 0 0 0 3px rgba(107, 70, 193, 0.1);
+            background-color: white;
+        }
+
+        .error {
+            color: #DC2626;
+            font-size: 0.75rem;
+            margin-top: 0.25rem;
+        }
+
+        .btn {
+            width: 100%;
+            padding: 1rem;
+            font-size: 1rem;
+            font-weight: 600;
+            background-color: var(--primary-color);
+            color: white;
+            border: none;
+            border-radius: 0.5rem;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            margin-top: 1.5rem;
+        }
+
+        .btn:hover {
+            background-color: #553C9A;
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(107, 70, 193, 0.15);
+        }
+
+        @media (max-width: 768px) {
+            .container {
+                flex-direction: column;
+            }
+
+            .image-container {
+                height: 200px;
+            }
+
+            .form-container {
+                padding: 1.5rem;
+            }
+        }
+
+        .form-container::-webkit-scrollbar {
+            width: 6px;
+        }
+
+        .form-container::-webkit-scrollbar-track {
+            background: var(--background);
+        }
+
+        .form-container::-webkit-scrollbar-thumb {
+            background: var(--secondary-color);
+            border-radius: 3px;
+        }
+
+        .form-container::-webkit-scrollbar-thumb:hover {
+            background: var(--primary-color);
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="image-container">
+            <div class="image-overlay"></div>
+        </div>
+
+        <div class="form-container">
+            <div class="form-header">
+                <h2>Create Account</h2>
+                <p>Fill in your details to get started</p>
+            </div>
+
+            <form id="signupForm" action="/signup" method="POST" onsubmit="return validateForm(event)">
+                <div class="form-section">
+                    <h3>Account Details</h3>
+                    <div class="input-group">
+                        <label for="email">Email Address</label>
+                        <input type="email" id="email" name="email" placeholder="Enter your email" required>
+                        <div id="emailError" class="error"></div>
+                    </div>
+                    <div class="input-group">
+                        <label for="username">Username</label>
+                        <input type="text" id="username" name="username" placeholder="Choose a username" required>
+                        <div id="usernameError" class="error"></div>
+                    </div>
+                    <div class="input-group">
+                        <label for="password">Password</label>
+                        <input type="password" id="password" name="password" placeholder="Create a strong password" required>
+                        <div id="passwordError" class="error"></div>
+                    </div>
+                    <div class="input-group">
+                        <label for="confirmPassword">Confirm Password</label>
+                        <input type="password" id="confirmPassword" name="confirm_password" placeholder="Confirm your password" required>
+                        <div id="confirmPasswordError" class="error"></div>
+                    </div>
+                </div>
+
+                <div class="form-section">
+                    <h3>Personal Information</h3>
+                    <div class="input-group">
+                        <label for="full_name">Full Name</label>
+                        <input type="text" id="full_name" name="full_name" placeholder="Enter your full name" required>
+                    </div>
+                    <div class="input-group">
+                        <label for="date_of_birth">Date of Birth</label>
+                        <input type="date" id="date_of_birth" name="date_of_birth" required>
+                    </div>
+                    <div class="input-group">
+                        <label for="phone_number">Phone Number</label>
+                        <input type="tel" id="phone_number" name="phone_number" placeholder="Enter your phone number" required>
+                    </div>
+                    <div class="input-group">
+                        <label for="address">Address</label>
+                        <input type="text" id="address" name="address" placeholder="Enter your address" required>
+                    </div>
+                </div>
+
+                <div class="form-section">
+                    <h3>Emergency Information</h3>
+                    <div class="input-group">
+                        <label for="blood_type">Blood Type</label>
+                        <input type="text" id="blood_type" name="blood_type" placeholder="Enter your blood type" required>
+                    </div>
+                    <div class="input-group">
+                        <label for="allergies">Allergies</label>
+                        <input type="text" id="allergies" name="allergies" placeholder="Enter your allergies (if any)">
+                    </div>
+                    <div class="input-group">
+                        <label for="emergency_contact_name">Emergency Contact Name</label>
+                        <input type="text" id="emergency_contact_name" name="emergency_contact_name" placeholder="Enter emergency contact's name" required>
+                    </div>
+                    <div class="input-group">
+                        <label for="emergency_contact_relation">Relationship</label>
+                        <input type="text" id="emergency_contact_relation" name="emergency_contact_relation" placeholder="Enter relation to emergency contact" required>
+                    </div>
+                    <div class="input-group">
+                        <label for="emergency_contact_phone">Emergency Contact Phone</label>
+                        <input type="tel" id="emergency_contact_phone" name="emergency_contact_phone" placeholder="Enter emergency contact's phone number" required>
+                    </div>
+                </div>
+
+                <button type="submit" class="btn">Create Account</button>
+            </form>
+        </div>
+    </div>
+
+    <script>
+        function validateForm(event) {
+            event.preventDefault();
+            let isValid = true;
+
+            const email = document.getElementById("email").value.trim();
+            const emailError = document.getElementById("emailError");
+            const emailPattern = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+            if (!email) {
+                emailError.textContent = "Email is required";
+                isValid = false;
+            } else if (!emailPattern.test(email)) {
+                emailError.textContent = "Please enter a valid email address";
+                isValid = false;
+            } else {
+                emailError.textContent = "";
+            }
+
+            const username = document.getElementById("username").value.trim();
+            const usernameError = document.getElementById("usernameError");
+            if (!username) {
+                usernameError.textContent = "Username is required";
+                isValid = false;
+            } else {
+                usernameError.textContent = "";
+            }
+
+            const password = document.getElementById("password").value.trim();
+            const passwordError = document.getElementById("passwordError");
+            if (password.length < 6) {
+                passwordError.textContent = "Password must be at least 6 characters";
+                isValid = false;
+            } else {
+                passwordError.textContent = "";
+            }
+
+            const confirmPassword = document.getElementById("confirmPassword").value.trim();
+            const confirmPasswordError = document.getElementById("confirmPasswordError");
+            if (confirmPassword !== password) {
+                confirmPasswordError.textContent = "Passwords do not match";
+                isValid = false;
+            } else {
+                confirmPasswordError.textContent = "";
+            }
+
+            if (isValid) {
+                document.getElementById("signupForm").submit();
+            }
+        }
+    </script>
+</body>
+</html>

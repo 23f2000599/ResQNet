@@ -1,0 +1,580 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ResQNet - Emergency Response</title>
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <script src="https://unpkg.com/lucide@latest"></script>
+    <style>
+        :root {
+            --primary: #7C3AED;
+            --primary-dark: #6D28D9;
+            --primary-light: #EDE9FE;
+            --secondary: #9333EA;
+            --secondary-dark: #7E22CE;
+            --background: #F5F3FF;
+            --surface: #FFFFFF;
+            --text: #1E1B4B;
+            --text-light: #6B7280;
+            --danger: #9333EA;
+            --danger-light: #F3E8FF;
+            --danger-glow: rgba(147, 51, 234, 0.5);
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Outfit', sans-serif;
+        }
+
+        body {
+            background: var(--background);
+            color: var(--text);
+            min-height: 100vh;
+            line-height: 1.6;
+        }
+
+        .navbar {
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(10px);
+            box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            z-index: 50;
+        }
+
+        .nav-container {
+            max-width: 1280px;
+            margin: 0 auto;
+            padding: 0 1.5rem;
+            height: 72px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .nav-brand {
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: var(--primary);
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+            text-decoration: none;
+            transition: transform 0.2s ease;
+        }
+
+        .nav-brand:hover {
+            transform: translateY(-1px);
+        }
+
+        .nav-links {
+            display: flex;
+            gap: 1.5rem;
+        }
+
+        .nav-link {
+            color: var(--text);
+            text-decoration: none;
+            font-weight: 500;
+            padding: 0.75rem 1.25rem;
+            border-radius: 0.75rem;
+            transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .nav-link::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 100%;
+            height: 2px;
+            background: var(--primary);
+            transform: scaleX(0);
+            transition: transform 0.3s ease;
+        }
+
+        .nav-link:hover {
+            color: var(--primary);
+            background: var(--primary-light);
+        }
+
+        .nav-link:hover::after {
+            transform: scaleX(1);
+        }
+
+        .hero-section {
+            margin-top: 72px;
+            padding: 6rem 2rem;
+            background: linear-gradient(rgba(107, 79, 231, 0.8), rgba(101, 57, 233, 0.8)), 
+                        url('https://images.unsplash.com/photo-1582213782179-e0d53f98f2ca?w=1600&q=80');
+            background-size: cover;
+            background-position: center;
+            background-attachment: fixed;
+            color: white;
+            text-align: center;
+            position: relative;
+        }
+
+        .hero-title {
+            font-size: 4rem;
+            font-weight: 700;
+            margin-bottom: 1.5rem;
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3);
+            animation: fadeInDown 1s ease;
+        }
+
+        .hero-subtitle {
+            font-size: 1.75rem;
+            margin-bottom: 2rem;
+            opacity: 0.9;
+            text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.3);
+            animation: fadeInUp 1s ease 0.3s backwards;
+        }
+
+        .sos-section {
+            padding: 6rem 2rem;
+            max-width: 1280px;
+            margin: 0 auto;
+            display: flex;
+            gap: 6rem;
+            align-items: center;
+        }
+
+        .sos-button-circle {
+            width: 350px;
+            height: 350px;
+            background: radial-gradient(circle at center, var(--secondary) 60%, var(--primary-dark));
+            color: white;
+            border-radius: 50%;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            font-size: 2.5rem;
+            font-weight: 700;
+            cursor: pointer;
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            border: none;
+            box-shadow: 0 0 0 rgba(147, 51, 234, 0.4);
+            animation: pulse 2s infinite;
+        }
+
+        @keyframes pulse {
+            0% {
+                box-shadow: 0 0 0 0 var(--danger-glow);
+            }
+            70% {
+                box-shadow: 0 0 0 20px rgba(147, 51, 234, 0);
+            }
+            100% {
+                box-shadow: 0 0 0 0 rgba(147, 51, 234, 0);
+            }
+        }
+
+        .sos-button-circle:hover {
+            transform: scale(1.05);
+            box-shadow: 0 20px 40px rgba(147, 51, 234, 0.3);
+        }
+
+        .sos-button-circle i {
+            margin-bottom: 1rem;
+            animation: bounce 2s infinite;
+        }
+
+        @keyframes bounce {
+            0%, 20%, 50%, 80%, 100% {
+                transform: translateY(0);
+            }
+            40% {
+                transform: translateY(-20px);
+            }
+            60% {
+                transform: translateY(-10px);
+            }
+        }
+
+        .emergency-info {
+            flex: 1;
+        }
+
+        .emergency-title {
+            font-size: 3rem;
+            font-weight: 700;
+            margin-bottom: 1.5rem;
+            color: var(--text);
+            position: relative;
+            display: inline-block;
+        }
+
+        .emergency-title::after {
+            content: '';
+            position: absolute;
+            left: 0;
+            bottom: -0.5rem;
+            width: 60px;
+            height: 4px;
+            background: var(--primary);
+            border-radius: 2px;
+        }
+
+        .emergency-text {
+            font-size: 1.25rem;
+            color: var(--text-light);
+            margin-bottom: 2.5rem;
+            line-height: 1.8;
+        }
+
+        .emergency-steps {
+            background: var(--surface);
+            padding: 2.5rem;
+            border-radius: 1.5rem;
+            box-shadow: 0 10px 30px rgba(124, 58, 237, 0.1);
+            transform: translateY(0);
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+
+        .emergency-steps:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 15px 40px rgba(124, 58, 237, 0.15);
+        }
+
+        .steps-title {
+            font-size: 1.75rem;
+            font-weight: 600;
+            margin-bottom: 1.5rem;
+            color: var(--text);
+        }
+
+        .steps-list {
+            list-style-position: inside;
+            color: var(--text-light);
+            counter-reset: steps;
+        }
+
+        .steps-list li {
+            margin-bottom: 1.25rem;
+            line-height: 1.6;
+            position: relative;
+            padding-left: 3rem;
+            counter-increment: steps;
+        }
+
+        .steps-list li::before {
+            content: counter(steps);
+            position: absolute;
+            left: 0;
+            top: 50%;
+            transform: translateY(-50%);
+            width: 32px;
+            height: 32px;
+            background: var(--primary-light);
+            color: var(--primary);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 600;
+            font-size: 0.9rem;
+        }
+
+        .code-section {
+            padding: 6rem 2rem;
+            background: var(--surface);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .code-section::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 1px;
+            background: linear-gradient(to right, transparent, var(--primary-light), transparent);
+        }
+
+        .code-container {
+            max-width: 1280px;
+            margin: 0 auto;
+        }
+
+        .code-title {
+            font-size: 2.5rem;
+            font-weight: 700;
+            margin-bottom: 3rem;
+            color: var(--text);
+            text-align: center;
+            position: relative;
+        }
+
+        .code-title::after {
+            content: '';
+            position: absolute;
+            bottom: -1rem;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 80px;
+            height: 4px;
+            background: var(--primary);
+            border-radius: 2px;
+        }
+
+        .code-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+            gap: 2.5rem;
+        }
+
+        .code-card {
+            background: var(--background);
+            padding: 2.5rem;
+            border-radius: 1.5rem;
+            box-shadow: 0 10px 30px rgba(124, 58, 237, 0.1);
+            transition: all 0.3s ease;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .code-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 4px;
+            background: var(--primary);
+            transform: scaleX(0);
+            transform-origin: left;
+            transition: transform 0.3s ease;
+        }
+
+        .code-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 15px 40px rgba(124, 58, 237, 0.15);
+        }
+
+        .code-card:hover::before {
+            transform: scaleX(1);
+        }
+
+        .code-card h3 {
+            color: var(--primary);
+            font-size: 1.5rem;
+            margin-bottom: 1.5rem;
+            font-weight: 600;
+        }
+
+        .code-card ul {
+            list-style: none;
+        }
+
+        .code-card li {
+            margin-bottom: 1rem;
+            padding-left: 1.5rem;
+            position: relative;
+            color: var(--text-light);
+        }
+
+        .code-card li::before {
+            content: '•';
+            position: absolute;
+            left: 0;
+            color: var(--primary);
+            font-weight: bold;
+        }
+
+        @keyframes fadeInDown {
+            from {
+                opacity: 0;
+                transform: translateY(-20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        @media (max-width: 768px) {
+            .nav-container {
+                padding: 0 1rem;
+            }
+
+            .hero-title {
+                font-size: 2.5rem;
+            }
+
+            .hero-subtitle {
+                font-size: 1.25rem;
+            }
+
+            .sos-section {
+                flex-direction: column;
+                text-align: center;
+                gap: 3rem;
+            }
+
+            .emergency-title::after {
+                left: 50%;
+                transform: translateX(-50%);
+            }
+
+            .nav-links {
+                display: none;
+            }
+
+            .code-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .steps-list li {
+                padding-left: 2.5rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <nav class="navbar">
+        <div class="nav-container">
+            <a href="/" class="nav-brand">
+                <i data-lucide="shield-alert"></i>
+                ResQNet
+            </a>
+            <div class="nav-links">
+                <a href="/sos" class="nav-link">
+                    <i data-lucide="siren"></i>
+                    SOS
+                </a>
+                <a href="/marketpage" class="nav-link">
+                    <i data-lucide="shopping-bag"></i>
+                    Marketplace
+                </a>
+                <a href="/safezone" class="nav-link">
+                    <i data-lucide="shield"></i>
+                    Safezone
+                </a>
+                <a href="/details" class="nav-link">
+                    <i data-lucide="user"></i>
+                    Profile
+                </a>
+            </div>
+        </div>
+    </nav>
+
+    <section class="hero-section">
+        <h1 class="hero-title">Welcome to ResQNet</h1>
+        <p class="hero-subtitle">Your Emergency Response Platform</p>
+    </section>
+
+    <section class="sos-section">
+        <button class="sos-button-circle" onclick="sendSOS()">
+            <i data-lucide="siren" style="width: 64px; height: 64px;"></i>
+            Emergency
+        </button>
+        <div class="emergency-info">
+            <h2 class="emergency-title">Emergency Response</h2>
+            <p class="emergency-text">
+                This is an all-in-one platform for your safety and emergency needs. Whether it's an SOS alert, mental health support, or a volunteer network, we have you covered.
+            </p>
+            <div class="emergency-steps">
+                <h3 class="steps-title">Steps to Follow in Case of an Emergency:</h3>
+                <ol class="steps-list">
+                    <li>Stay calm and assess the situation.</li>
+                    <li>If you are in immediate danger, press the SOS button to send your location.</li>
+                    <li>Call emergency services or the relevant numbers.</li>
+                    <li>If safe, try to provide as much information as possible to responders.</li>
+                    <li>Wait for help to arrive while keeping yourself safe.</li>
+                </ol>
+            </div>
+        </div>
+    </section>
+
+    <section class="code-section">
+        <div class="code-container">
+            <h2 class="code-title">Emergency Code Signals</h2>
+            <div class="code-grid">
+                <div class="code-card">
+                    <h3>Pizza Order (Kidnapping/Forced Situations)</h3>
+                    <ul>
+                        <li>"I would like to order a pizza with extra cheese" – Asking for help</li>
+                        <li>"I'd like a large pepperoni pizza" – Indicating weapons or serious threat</li>
+                    </ul>
+                </div>
+                <div class="code-card">
+                    <h3>Angel Drink (Bar/Restaurant)</h3>
+                    <ul>
+                        <li>"Can I get an Angel Drink?" – Requesting immediate help</li>
+                        <li>"I'll have an Angel Shot with lime" – Indicating abuse or danger</li>
+                        <li>"Could you make it strong?" – Requesting assistance discreetly</li>
+                    </ul>
+                </div>
+                <div class="code-card">
+                    <h3>Shopping (Threatened or Held Against Will)</h3>
+                    <ul>
+                        <li>"Do you have any strawberries?" – Signaling distress</li>
+                        <li>"Can I buy something from the store?" – Needing assistance</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <script>
+        // Initialize Lucide icons
+        lucide.createIcons();
+
+        function sendSOS() {
+            if ("geolocation" in navigator) {
+                navigator.geolocation.getCurrentPosition(function(position) {
+                    let latitude = position.coords.latitude;
+                    let longitude = position.coords.longitude;
+                    let locationURL = `https://www.google.com/maps?q=${latitude},${longitude}`;
+
+                    fetch("http://127.0.0.1:5000/send-sos", {
+                        method: "POST",
+                        headers: { "Content-Type": "application/json" },
+                        body: JSON.stringify({
+                            phone: "9871095817",
+                            message: `🚨 SOS Alert! Location: ${locationURL}`
+                        })
+                    }).then(response => {
+                        if (response.ok) {
+                            alert("SOS Alert Sent! Your location has been shared.");
+                        } else {
+                            alert("Error sending SOS alert.");
+                        }
+                    }).catch(error => {
+                        console.error("Error:", error);
+                        alert("Error sending SOS alert.");
+                    });
+                }, function(error) {
+                    alert("Unable to access location. Please enable location services.");
+                });
+            } else {
+                alert("Geolocation is not supported by this browser.");
+            }
+        }
+    </script>
+</body>
+</html>

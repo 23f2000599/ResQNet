@@ -1,0 +1,227 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Social Welfare App</title>
+    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap">
+    <style>
+    :root {
+        --primary-color: #6B46C1;
+        --secondary-color: #9F7AEA;
+        --accent-color: #B794F4;
+        --text-color: #2D3748;
+        --light-text: #FFFFFF;
+        --background: #F7FAFC;
+    }
+    
+    * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+    }
+    
+    body {
+        font-family: 'Poppins', sans-serif;
+        line-height: 1.6;
+        color: var(--text-color);
+        background-color: var(--background);
+    }
+    
+    .hero {
+        position: relative;
+        height: 80vh;
+        background: linear-gradient(135deg, #6B46C1 0%, #805AD5 100%);
+        color: var(--light-text);
+        overflow: hidden;
+    }
+    
+    .overlay {
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1440 320"><path fill="%239F7AEA" fill-opacity="0.2" d="M0,96L48,112C96,128,192,160,288,160C384,160,480,128,576,122.7C672,117,768,139,864,154.7C960,171,1056,181,1152,165.3C1248,149,1344,107,1392,85.3L1440,64L1440,320L1392,320C1344,320,1248,320,1152,320C1056,320,960,320,864,320C768,320,672,320,576,320C480,320,384,320,288,320C192,320,96,320,48,320L0,320Z"></path></svg>');
+        background-size: cover;
+        background-position: bottom;
+        opacity: 0.6;
+    }
+    
+    nav {
+        position: relative;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        padding: 2rem 4rem;
+        z-index: 1;
+    }
+    
+    .logo {
+        font-size: 1.5rem;
+        font-weight: 700;
+        color: var(--light-text);
+    }
+    
+    .nav-links a {
+        color: var(--light-text);
+        text-decoration: none;
+        margin-left: 2rem;
+        font-weight: 500;
+        transition: opacity 0.3s ease;
+    }
+    
+    .nav-links a:hover {
+        opacity: 0.8;
+    }
+    
+    .hero-content {
+        position: relative;
+        max-width: 800px;
+        margin: 0 auto;
+        padding: 6rem 2rem;
+        text-align: center;
+        z-index: 1;
+    }
+    
+    .hero-content h1 {
+        font-size: 3.5rem;
+        font-weight: 700;
+        margin-bottom: 1.5rem;
+        line-height: 1.2;
+    }
+    
+    .hero-content p {
+        font-size: 1.2rem;
+        margin-bottom: 2.5rem;
+        opacity: 0.9;
+    }
+    
+    .cta-buttons {
+        display: flex;
+        gap: 1rem;
+        justify-content: center;
+    }
+    
+    .btn {
+        padding: 1rem 2.5rem;
+        border: none;
+        border-radius: 50px;
+        font-size: 1rem;
+        font-weight: 600;
+        cursor: pointer;
+        transition: transform 0.3s ease, box-shadow 0.3s ease;
+    }
+    
+    .btn:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+    }
+    
+    .btn.primary {
+        background-color: var(--light-text);
+        color: var(--primary-color);
+    }
+    
+    .btn.secondary {
+        background-color: transparent;
+        border: 2px solid var(--light-text);
+        color: var(--light-text);
+    }
+    
+    .features {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+        gap: 2rem;
+        padding: 4rem;
+        background-color: var(--background);
+    }
+    
+    .feature-card {
+        background: white;
+        padding: 2rem;
+        border-radius: 1rem;
+        text-align: center;
+        box-shadow: 0 4px 6px rgba(0, 0, 0, 0.05);
+        transition: transform 0.3s ease;
+    }
+    
+    .feature-card:hover {
+        transform: translateY(-5px);
+    }
+    
+    .feature-icon {
+        font-size: 2.5rem;
+        margin-bottom: 1rem;
+    }
+    
+    .feature-card h3 {
+        color: var(--primary-color);
+        margin-bottom: 0.5rem;
+    }
+    
+    .feature-card p {
+        color: var(--text-color);
+        opacity: 0.8;
+    }
+    
+    @media (max-width: 768px) {
+        nav {
+            padding: 1.5rem;
+        }
+        
+        .nav-links {
+            display: none;
+        }
+        
+        .hero-content h1 {
+            font-size: 2.5rem;
+        }
+        
+        .hero-content p {
+            font-size: 1rem;
+        }
+        
+        .features {
+            padding: 2rem;
+        }
+    }
+    
+</style>
+</head>
+<body>
+    <div class="hero">
+        <div class="overlay"></div>
+        <nav>
+            <div class="logo">ResQNet</div>
+        </nav>
+        <div class="hero-content">
+            <h1>Making a Difference Together</h1>
+            <p>Join our community dedicated to improving lives through innovative solutions</p>
+            <div class="cta-buttons">
+                <button class="btn primary" onclick="window.location.href='/login'">Login</button>
+                <button class="btn secondary" onclick="window.location.href='/signup'">Sign Up</button>
+            </div>
+        </div>
+    </div>
+    <div class="features">
+        <div class="feature-card">
+            <div class="feature-icon">🚨</div>
+            <h3>Emergency SOS System</h3>
+            <p>One-tap distress alerts to responders, family & authorities with crisis assistance.</p>
+        </div>
+        <div class="feature-card">
+            <div class="feature-icon">🌍</div>
+            <h3>Crisis Supply Marketplace</h3>
+            <p>Buy or sell emergency essentials like food, medicine, and safety gear.</p>
+        </div>
+        <div class="feature-card">
+            <div class="feature-icon">🛡</div>
+            <h3>SafeZone & Women’s Safety</h3>
+            <p>Risk alerts, tracking location, fake calls, and emergency support for safer environments.</p>
+        </div>
+    </div>
+    
+</body>
+</html>

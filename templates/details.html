@@ -1,0 +1,415 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Emergency Response | Profile</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <script src="https://unpkg.com/lucide@latest"></script>
+    <style>
+        :root {
+            --primary: #4F46E5;
+            --primary-dark: #4338CA;
+            --secondary: #10B981;
+            --secondary-dark: #059669;
+            --background: #F3F4F6;
+            --surface: #FFFFFF;
+            --text: #1F2937;
+            --text-light: #6B7280;
+            --danger: #EF4444;
+            --danger-light: #FEE2E2;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Inter', sans-serif;
+        }
+
+        body {
+            background: linear-gradient(135deg, #EEF2FF 0%, #E0E7FF 100%);
+            color: var(--text);
+            min-height: 100vh;
+        }
+
+        /* Navigation */
+        .navbar {
+            background: var(--surface);
+            box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            z-index: 50;
+        }
+
+        .nav-container {
+            max-width: 1280px;
+            margin: 0 auto;
+            padding: 0 1rem;
+            height: 64px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .nav-brand {
+            font-size: 1.25rem;
+            font-weight: 700;
+            color: var(--primary);
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            text-decoration: none;
+        }
+
+        .nav-links {
+            display: flex;
+            gap: 1rem;
+        }
+
+        .nav-link {
+            color: var(--text-light);
+            text-decoration: none;
+            font-weight: 500;
+            padding: 0.5rem 1rem;
+            border-radius: 0.5rem;
+            transition: all 0.2s;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .nav-link:hover {
+            color: var(--primary);
+            background: #F3F4F6;
+        }
+
+        /* Sidebar */
+        .sidebar {
+            position: fixed;
+            left: 0;
+            top: 64px;
+            bottom: 0;
+            width: 240px;
+            background: var(--surface);
+            border-right: 1px solid #E5E7EB;
+            padding: 1.5rem;
+            overflow-y: auto;
+        }
+
+        .sidebar-link {
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+            padding: 0.75rem 1rem;
+            color: var(--text-light);
+            text-decoration: none;
+            border-radius: 0.5rem;
+            transition: all 0.2s;
+            margin-bottom: 0.5rem;
+        }
+
+        .sidebar-link:hover {
+            color: var(--primary);
+            background: #F3F4F6;
+        }
+
+        .sidebar-link.active {
+            color: var(--primary);
+            background: #EEF2FF;
+            font-weight: 500;
+        }
+
+        /* Main Content */
+        .main-content {
+            margin-left: 240px;
+            margin-top: 64px;
+            padding: 2rem;
+        }
+
+        .profile-container {
+            max-width: 800px;
+            margin: 0 auto;
+        }
+
+        .profile-header {
+            background: var(--surface);
+            border-radius: 1rem;
+            padding: 2rem;
+            margin-bottom: 2rem;
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+            display: flex;
+            gap: 2rem;
+            align-items: center;
+        }
+
+        .profile-avatar {
+            width: 120px;
+            height: 120px;
+            border-radius: 50%;
+            object-fit: cover;
+            border: 4px solid var(--primary);
+            padding: 4px;
+        }
+
+        .profile-info {
+            flex: 1;
+        }
+
+        .profile-name {
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: var(--text);
+            margin-bottom: 0.5rem;
+        }
+
+        .profile-email {
+            color: var(--text-light);
+            margin-bottom: 1rem;
+        }
+
+        .profile-status {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            padding: 0.5rem 1rem;
+            background: #ECFDF5;
+            color: var(--secondary);
+            border-radius: 9999px;
+            font-weight: 500;
+        }
+
+        .status-dot {
+            width: 8px;
+            height: 8px;
+            background: var(--secondary);
+            border-radius: 50%;
+            animation: pulse 2s infinite;
+        }
+
+        .profile-details {
+            background: var(--surface);
+            border-radius: 1rem;
+            padding: 2rem;
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+        }
+
+        .details-section {
+            margin-bottom: 2rem;
+        }
+
+        .section-title {
+            font-size: 1.25rem;
+            font-weight: 600;
+            color: var(--text);
+            margin-bottom: 1rem;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .detail-row {
+            display: flex;
+            margin-bottom: 1rem;
+            padding: 1rem;
+            background: var(--background);
+            border-radius: 0.5rem;
+        }
+
+        .detail-label {
+            width: 200px;
+            font-weight: 500;
+            color: var(--text-light);
+        }
+
+        .detail-value {
+            flex: 1;
+            color: var(--text);
+        }
+
+        .edit-button {
+            background: var(--primary);
+            color: white;
+            border: none;
+            padding: 0.75rem 1.5rem;
+            border-radius: 0.5rem;
+            font-weight: 500;
+            cursor: pointer;
+            transition: all 0.2s;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .edit-button:hover {
+            background: var(--primary-dark);
+        }
+
+        @keyframes pulse {
+            0% {
+                transform: scale(0.95);
+                box-shadow: 0 0 0 0 rgba(16, 185, 129, 0.7);
+            }
+            
+            70% {
+                transform: scale(1);
+                box-shadow: 0 0 0 10px rgba(16, 185, 129, 0);
+            }
+            
+            100% {
+                transform: scale(0.95);
+                box-shadow: 0 0 0 0 rgba(16, 185, 129, 0);
+            }
+        }
+
+        @media (max-width: 768px) {
+            .sidebar {
+                transform: translateX(-100%);
+                transition: transform 0.3s ease;
+            }
+
+            .sidebar.active {
+                transform: translateX(0);
+            }
+
+            .main-content {
+                margin-left: 0;
+            }
+
+            .nav-links {
+                display: none;
+            }
+
+            .profile-header {
+                flex-direction: column;
+                text-align: center;
+            }
+
+            .detail-row {
+                flex-direction: column;
+            }
+
+            .detail-label {
+                width: 100%;
+                margin-bottom: 0.5rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <nav class="navbar">
+        <div class="nav-container">
+            <a href="/" class="nav-brand">
+                <i data-lucide="shield-alert"></i>
+                Emergency Response
+            </a>
+            <div class="nav-links">
+                <a href="/sos" class="nav-link">
+                    <i data-lucide="siren"></i>
+                    SOS
+                </a>
+                <a href="/marketpage" class="nav-link">
+                    <i data-lucide="shopping-bag"></i>
+                    Marketplace
+                </a>
+                <a href="/safezone" class="nav-link">
+                    <i data-lucide="shield"></i>
+                    Safezone
+                </a>
+                <a href="/details" class="nav-link">
+                    <i data-lucide="user"></i>
+                    Profile
+                </a>
+            </div>
+        </div>
+    </nav>
+    <aside class="sidebar">
+        <a href="/details" class="sidebar-link active">
+            <i data-lucide="user"></i>
+            Profile Overview
+        </a>
+        <a href="/medical" class="sidebar-link ">
+            <i data-lucide="heart-pulse"></i>
+            Medical History
+        </a>
+        <a href="/emergencycon" class="sidebar-link">
+            <i data-lucide="phone"></i>
+            Emergency Contacts
+        </a>
+    </aside>
+
+    <main class="main-content">
+        <div class="profile-container">
+            <div class="profile-header">
+                <img src="https://th.bing.com/th/id/OIP.xvnvqQRd6wK5rLBZNjmjRAHaFj?w=231&h=180&c=7&r=0&o=5&dpr=1.3&pid=1.7" 
+                     alt="Profile" 
+                     class="profile-avatar">
+                <div class="profile-info">
+                    <h1 class="profile-name">{{ name }}</h1>
+                    <p class="profile-email">{{ email }}</p>
+                    <div class="profile-status">
+                        <div class="status-dot"></div>
+                        Emergency Response Active
+                    </div>
+                </div>
+                <a href="{{ url_for('edit_profile') }}" class="edit-button">
+                    <i data-lucide="edit"></i>
+                    Edit Profile
+                </a>
+                
+            </div>
+
+            <div class="profile-details">
+                <div class="details-section">
+                    <h2 class="section-title">
+                        <i data-lucide="user"></i>
+                        Personal Information
+                    </h2>
+                    <div class="detail-row">
+                        <div class="detail-label">Full Name</div>
+                        <div class="detail-value">{{ full_name }}</div>
+                    </div>
+                    <div class="detail-row">
+                        <div class="detail-label">Date of Birth</div>
+                        <div class="detail-value">{{date_of_birth}}</div>
+                    </div>
+                    <div class="detail-row">
+                        <div class="detail-label">Phone Number</div>
+                        <div class="detail-value">{{phone_number}}</div>
+                    </div>
+                    <div class="detail-row">
+                        <div class="detail-label">Address</div>
+                        <div class="detail-value">{{address}}</div>
+                    </div>
+                </div>
+
+                <div class="details-section">
+                    <h2 class="section-title">
+                        <i data-lucide="shield"></i>
+                        Emergency Information
+                    </h2>
+                    <div class="detail-row">
+                        <div class="detail-label">Blood Type</div>
+                        <div class="detail-value">{{blood_type}}</div>
+                    </div>
+                    <div class="detail-row">
+                        <div class="detail-label">Allergies</div>
+                        <div class="detail-value">{{allergies}}</div>
+                    </div>
+                    <div class="detail-row">
+                        <div class="detail-label">Emergency Contact</div>
+                        <div class="detail-value">{{emergency_contact_name}} - {{emergency_contact_relation}} - {{emergency_contact_phone}}</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <script>
+        // Initialize Lucide icons
+        lucide.createIcons();
+    </script>
+</body>
+</html>

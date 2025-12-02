@@ -1,0 +1,128 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Reset Password - Social Welfare App</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #1E6B8F;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+        }
+        .container {
+            display: flex;
+            background-color: #fff;
+            border-radius: 10px;
+            box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.3);
+            max-width: 800px;
+            width: 100%;
+        }
+        .image-container {
+            flex: 1;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            background-color: #f0f0f0;
+            border-top-left-radius: 10px;
+            border-bottom-left-radius: 10px;
+        }
+        .image-container img {
+            width: 100%;
+            height: auto;
+            border-top-left-radius: 10px;
+            border-bottom-left-radius: 10px;
+        }
+        .form-container {
+            flex: 1;
+            padding: 20px;
+            text-align: center;
+        }
+        h2 {
+            color: #1E6B8F;
+        }
+        input {
+            width: 90%;
+            padding: 10px;
+            margin: 10px 0;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+        }
+        .btn {
+            width: 100%;
+            padding: 10px;
+            font-size: 1em;
+            background-color: #007BFF;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+        .btn:hover {
+            background-color: #0056b3;
+        }
+        .error-message {
+            color: red;
+            font-size: 0.9em;
+            display: none;
+        }
+    </style>
+    <script>
+        
+        function validatePasswords(event) {
+    event.preventDefault(); // Prevent form submission
+
+    let password = document.getElementById("password").value;
+    let confirmPassword = document.getElementById("confirmPassword").value;
+    let errorMessage = document.getElementById("error-message");
+
+    // Password validation regex (Minimum 8 characters, 1 uppercase, 1 lowercase, 1 special character)
+    let passwordRegex = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\W).{8,}$/;
+
+    if (!passwordRegex.test(password)) {
+        errorMessage.textContent = "Password must be at least 8 characters long, contain uppercase, lowercase, and a special symbol.";
+        errorMessage.style.display = "block";
+        return false;
+    }
+
+    if (password !== confirmPassword) {
+        errorMessage.textContent = "Passwords do not match.";
+        errorMessage.style.display = "block";
+        return false;
+    }
+
+    // Hide error message if valid
+    errorMessage.style.display = "none";
+
+    // Simulate password reset success and redirect to /login
+    setTimeout(() => {
+        alert("Password reset successfully! Redirecting to login page.");
+        window.location.href = "/login";  // Ensure this path is correct
+    }, 500);
+}
+
+    </script>
+</head>
+<body>
+    <div class="container">
+        <div class="image-container">
+            <img src="static/forgot_password.png" alt="Reset Password Image">
+        </div>
+        <div class="form-container">
+            <h2>Enter Your New Password</h2>
+            <p>Please enter your new password to reset your account access.</p>
+            <form id="reset-form" onsubmit="validatePasswords(event)">
+                <input type="password" id="password" placeholder="New Password" required><br>
+                <input type="password" id="confirmPassword" placeholder="Confirm Password" required><br>
+                <p id="error-message" class="error-message"></p>
+                <button type="submit" class="btn">Reset Password</button>
+            </form>
+        </div>
+    </div>
+</body>
+</html>

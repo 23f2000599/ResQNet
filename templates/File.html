@@ -1,0 +1,725 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Personal Portfolio Website</title>
+    <link href='https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css' rel='stylesheet'>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap');
+
+:root {
+    --header-height: 3rem;
+    --font-semi: 600;
+
+    --first-color: #4070F4;
+    --second-color: #0E2431;
+
+    --body-font: 'Poppins', sans-serif;
+    --big-font-size: 2rem;
+    --h2-font-size: 1.25rem;
+    --normal-font-size: .938rem;
+
+    --mb1: .5rem;
+    --mb2: 1rem;
+    --mb3: 1.5rem;
+    --mb4: 2rem;
+    --mb5: 2.5rem;
+    --mb6: 3rem;
+
+    --z-back: -10;
+    --z-normal: 1;
+    --z-tooltip: 10;
+    --z-fixed: 100;
+}
+
+@media screen and (min-width: 768px) {
+    :root {
+        --big-font-size: 3.5rem;
+        --h2-font-size: 2rem;
+        --normal-font-size: 1rem;
+    }
+}
+
+*, ::before, ::after { box-sizing: border-box; }
+html { scroll-behavior: smooth; }
+
+body {
+    margin: var(--header-height) 0 0 0;
+    font-family: var(--body-font);
+    font-size: var(--normal-font-size);
+    color: var(--second-color);
+}
+
+h1, h2, p { margin: 0; }
+
+ul {
+    margin: 0;
+    padding: 0;
+    list-style: none;
+}
+
+a { text-decoration: none; }
+
+img {
+    max-width: 100%;
+    height: auto;
+    display: block;
+}
+
+.section-title {
+    position: relative;
+    font-size: var(--h2-font-size);
+    color: var(--first-color);
+    margin-top: var(--mb2);
+    margin-bottom: var(--mb4);
+    text-align: center;
+}
+
+    .section-title::after {
+        position: absolute;
+        content: '';
+        width: 64px;
+        height: 0.18rem;
+        left: 0;
+        right: 0;
+        margin: auto;
+        top: 2rem;
+        background-color: var(--first-color);
+    }
+
+.section {
+    padding-top: 3rem;
+    padding-bottom: 2rem;
+}
+
+.bd-grid {
+    max-width: 1024px;
+    display: grid;
+    grid-template-columns: 100%;
+    grid-column-gap: 2rem;
+    width: calc(100% - 2rem);
+    margin-left: var(--mb2);
+    margin-right: var(--mb2);
+}
+
+.l-header {
+    width: 100%;
+    position: fixed;
+    top: 0;
+    left: 0;
+    z-index: var(--z-fixed);
+    background-color: #ffffff;
+    box-shadow: 0 1px 4px rgba(146, 161, 176, .15);
+}
+
+.nav {
+    height: var(--header-height);
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    font-weight: var(--font-semi);
+}
+
+.nav-item { margin-bottom: var(--mb4); }
+.nav-link { position: relative; color: #ffffff; }
+    .nav-link:hover { position: relative; }
+        .nav-link:hover::after {
+            position: absolute;
+            content: '';
+            width: 100%;
+            height: 0.18rem;
+            left: 0;
+            top: 2rem;
+            background-color: var(--first-color);
+        }
+
+.nav-logo { color: var(--second-color); }
+.nav-toggle {
+    color: var(--second-color);
+    font-size: 1.5rem;
+    cursor: pointer;
+}
+
+.active::after {
+    position: absolute;
+    content: '';
+    width: 100%;
+    height: 0.18rem;
+    left: 0;
+    top: 2rem;
+    background-color: var(--first-color);
+}
+
+.home { height: calc(100vh - 3rem); row-gap: 1rem; }
+.home-data { align-self: center; }
+.home-title { font-size: var(--big-font-size); margin-bottom: var(--mb5); }
+.home-title-color { color: var(--first-color); }
+.home-social { display: flex; flex-direction: column; }
+.home-social-icon {
+    width: max-content;
+    margin-bottom: var(--mb2);
+    font-size: 1.5rem;
+    color: var(--second-color);
+    transition: .3s;
+}
+
+    .home-social-icon:hover { color: var(--first-color); }
+    .home-img {
+    position: absolute;
+    right: 30px;  /* Added some space from the right edge */
+    bottom: 30px; /* Added some space from the bottom */
+    width: 352px;
+}
+
+.home-img img {
+    width: 350px;
+    height: 350px;
+    border-radius: 50%;
+    object-fit: fill; /* Ensures the image fills the circular space properly */
+    display: block; /* Removes any unwanted space */
+    margin-bottom: 20px; /* Additional bottom margin for safety */
+}
+
+/* For smaller screens, you might want to add this media query */
+@media screen and (max-height: 800px) {
+    .home-img {
+        bottom: 150px; /* Increased bottom spacing */
+        width: 400px; /* Slightly smaller on shorter screens */
+    }
+    
+    .home-img img {
+        width: 300px;
+        height: 300px;
+    }
+}
+
+/* Adjust section spacing */
+.section {
+    margin-bottom: 40px; /* Adjust this value as needed */
+}
+
+.contact {
+    margin-top: 0px; /* Reduces space above "Contact Us" */
+}
+
+
+
+.button {
+    display: inline-block;
+    background-color: var(--first-color);
+    color: #ffffff;
+    padding: 0.75rem 2.5rem;
+    font-weight: var(--font-semi);
+    border-radius: .5rem;
+}
+
+    .button:hover { box-shadow: 0 10px 36px rgba(0, 0, 0, .15); }
+
+/ABOUT/
+
+.about-container { row-gap: 2rem; text-align: center; }
+.about-subtitle { margin-bottom: var(--mb2); }
+.about-img { justify-self: center; }
+    .about-img img { width: 200px; border-radius: .5rem; }
+
+/SKILLS/
+
+.skills-container { row-gap: 2rem; text-align: center; }
+.skills-subtitle { margin-bottom: var(--mb2); }
+.skills-text { margin-bottom: var(--mb4); }
+.skills-data {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    position: relative;
+    font-weight: var(--font-semi);
+    padding: 0.5rem 1rem;
+    margin-bottom: var(--mb4);
+    border-radius: .5rem;
+    box-shadow: 0 4px 25px rgba(14, 36, 49, .15);
+}
+
+.skills-icon {
+    font-size: 2rem;
+    margin-right: var(--mb2);
+    color: var(--first-color);
+}
+
+.skills-names {
+    display: flex;
+    align-items: center;
+}
+
+.skills-bar {
+    position: absolute;
+    left: 0;
+    bottom: 0;
+    background-color: var(--first-color);
+    height: 0.25rem;
+    border-radius: .5rem;
+    z-index: var(--z-back);
+}
+
+.skills-html { width: 95%; }
+.skills-css { width: 85%; }
+.skills-js { width: 65%; }
+.skills-ux { width: 85%; }
+.skills-img { border-radius: .5rem; }
+
+/WORK/
+
+
+/* .work-img {
+    box-shadow: 0 4px 25px rgba(14, 36, 49, .15);
+    border-radius: .5rem;
+    overflow: hidden;
+}
+    .work-img img { transition: 1s; cursor: pointer; }
+        .work-img img:hover { transform: scale(1.1); } */
+
+/CONTACT/
+.contact-input {
+    width: 100%;
+    font-size: var(--normal-font-size);
+    font-weight: var(--font-semi);
+    padding: 1rem;
+    border-radius: .5rem;
+    border: 1px solid var(--second-color);
+    outline: none;
+    margin-bottom: var(--mb4);
+}
+
+.contact-button {
+    display: block;
+    border: none;
+    outline: none;
+    font-size: var(--normal-font-size);
+    cursor: pointer;
+    margin-left: auto;
+}
+
+/FOOTER/
+
+.footer {
+    background-color: var(--second-color);
+    color: #ffffff;
+    text-align: center;
+    font-weight: var(--font-semi);
+    padding: 2rem 0;
+}
+
+.footer-title {
+    font-size: 2rem;
+    margin-bottom: var(--mb4);
+}
+
+.footer-social { margin-bottom: var(--mb4); }
+
+.footer-icon {
+    font-size: 1.5rem;
+    color: #ffffff;
+    margin: 0 var(--mb2);
+}
+.work-img p {
+    font-size: 1rem;
+    color: var(--second-color);
+    font-weight: var(--font-semi);
+    margin-top: 10px;
+}
+
+/MEDIA QUERIES/
+
+@media screen and (min-width: 769px) {
+    body { margin: 0; }
+    .section { padding-top: 4rem; padding-bottom: 3rem; }
+    .section-title { margin-bottom: var(--mb6); }
+        .section-title::after { width: 80px; top: 3rem; }
+
+    .nav { height: calc(var(--header-height) + 1rem); }
+    .nav-list { display: flex; padding-top: 0; }
+    .nav-item { margin-left: var(--mb6); margin-bottom: 0; }
+    .nav-toggle { display: none; }
+    .nav-link { color: var(--second-color); }
+
+    .home { height: 100vh; }
+    .home-data { align-self: flex-end; }
+
+    .home-social {
+        padding-top: 0;
+        padding-bottom: 2.5rem;
+        flex-direction: row;
+        /* align-self: flex-end; */
+    }
+
+    .home-social-icon { margin-bottom: 0; margin-right: var(--mb4); }
+    .home-img { width: 457px; height: 475px; bottom: 15%; }
+
+    .about-container, .skills-container { 
+        grid-template-columns: repeat(2, 1fr);
+        align-items: center;
+        text-align: initial;
+    }
+
+    .about-img img { width: 300px; }
+
+    .work-container {
+        grid-template-columns: repeat(4, 1fr);
+        grid-template-rows: repeat(0, 0fr);
+        column-gap: 1rem;
+    }
+
+    .contact-form { width: 460px; }
+    .contact-container { justify-items: center; }
+}
+
+@media screen and (min-width: 1024px) {
+    .bd-grid { margin-left: auto; margin-right: auto; }
+    .home-img { right: 10%; }
+}
+
+@media screen and (max-width: 768px) {
+    .nav-menu {
+        position: fixed;
+        top: var(--header-height);
+        right: -100%;
+        width: 80%;
+        height: 100%;
+        padding: 2rem;
+        background-color: var(--second-color);
+        transition: .5s;
+    }
+
+    .show { right: 0; }
+}
+.work img {
+    width: 150px;
+    height: 150px;
+    border-radius: 50%;
+    object-fit: cover;
+    display: block; /* Removes extra space */
+    margin: 0 auto; /* Centers the images */
+}
+
+img {
+    width: 300px; /* Adjust size as needed */
+    height: 300px; /* Keep equal to width for a perfect circle */
+    border-radius: 50%;
+    object-fit: cover; /* Ensures images don't stretch */
+}
+.section {
+    margin-bottom: 40px; /* Adjust this value as needed */
+}
+
+.contact {
+    margin-top: 0px; /* Reduces space above "Contact Us" */
+}
+.l-header {
+    width: 250px; /* Width of the sidebar */
+    height: 100vh; /* Full height */
+    position: fixed;
+    top: 0;
+    left: 0;
+    background-color: #ffffff;
+    box-shadow: 0 1px 4px rgba(146, 161, 176, .15);
+    z-index: var(--z-fixed);
+}
+
+.nav {
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    padding: 2rem 1rem;
+    background-color: #4070F4;
+}
+
+.nav-menu {
+    width: 100%;
+}
+
+.nav-list {
+    display: flex;
+    flex-direction: column;
+    row-gap: 1.5rem;
+    padding-top: 2rem;
+}
+
+.nav-item {
+    margin-bottom: 1rem;
+}
+
+.nav-link {
+    color:white;
+    font-weight: var(--font-semi);
+}
+
+/* Adjust main content to accommodate sidebar */
+.l-main {
+    margin-left: 250px; /* Same as sidebar width */
+    padding: 1rem;
+}
+
+/* Update media queries */
+@media screen and (max-width: 768px) {
+    .l-header {
+        width: 100%;
+        height: var(--header-height);
+    }
+    
+    .nav-menu {
+        position: fixed;
+        top: var(--header-height);
+        left: -100%;
+        width: 80%;
+        height: 100%;
+        padding: 2rem;
+        background-color: var(--second-color);
+        transition: .5s;
+    }
+    
+    .l-main {
+        margin-left: 0;
+    }
+    
+    .show {
+        left: 0;
+    }
+}
+.navbar {
+            display: flex; justify-content: space-between; align-items: center;
+            background: #4070F4; padding: 10px 20px; color: white;
+        }
+        .navbar img { height: 40px; }
+        .nav-links button {
+            background: none; border: none; color: white; margin: 0 10px;
+            cursor: pointer; font-size: 16px;
+        }
+
+/* Update logo styling */
+.nav-logo {
+    padding: 1rem 0;
+    text-align: center;
+
+}
+.logoimage{
+    width: 10px;
+    height: 10px;
+}
+    </style>
+</head>
+<body>
+    <!-- Top Navbar -->
+<div class="navbar">
+    <img src="static\logo.jpg" alt="Logo" class="logoimage">
+    <div class="nav-links">
+        <button onclick="location.href='/sos'">SOS</button>
+        <button onclick="location.href='/marketpage'">Marketplace</button>
+        <button onclick="location.href='/safezone'">Safezone</button>
+        <button onclick="location.href='/details'">Profile</button>
+    </div>
+</div>
+
+<!-- Left Sidebar -->
+<header class="l-header">
+    <nav class="nav bd-grid">
+        <div class="nav-menu" id="nav-menu">
+            <div class="nav-logo">
+                <a href="#" class="nav-logo" style="color: white;">ResQnet</a>
+            </div>
+<!-- In the left sidebar navigation -->
+<ul class="nav-list">
+    <li class="nav-item"><a href="#home" class="nav-link active">Home</a></li>
+    <li class="nav-item"><a href="#about" class="nav-link">About</a></li>
+    <li class="nav-item"><a href="#skills" class="nav-link">Features</a></li>  <!-- Changed from #features to #skills -->
+    <li class="nav-item"><a href="#work" class="nav-link">Meet The Team</a></li>
+    <li class="nav-item"><a href="#contact" class="nav-link">Contact Us</a></li>
+</ul>
+
+        </div>
+    </nav>
+</header>
+
+    
+
+    <main class="l-main">
+        <section class="home bd-grid" id="home">
+            <div class="home-data">
+                <h1 class="home-title">Hi, <br>We're <span class="home-title-color">ResQNet</span><br>Help is just a tap away!</h1>
+                <a href="#" class="button">Contact</a>
+            </div>
+            <div class="home-social">
+                <!-- <a href="#" class="home-social-icon"><i class='bx bxl-linkedin' ></i></a>
+                <a href="#" class="home-social-icon"><i class='bx bxl-instagram' ></i></a>
+                <a href="#" class="home-social-icon"><i class='bx bxl-github' ></i></a> -->
+            </div>
+
+            <div class="home-img">
+                <img src="static\logo.jpeg" alt="image" style="margin-left: 120px; margin-top: 50px;">
+            </div>
+        </section>
+
+        <section class="about section" id="about">
+            <h2 class="section-title">About</h2>
+
+            <div class="about-container bd-grid">
+                <div class="about-img">
+                    <img src="static/aboutus.png" alt="image">
+                </div>
+
+                <div>
+                    <h2 class="about-subtitle">About Us</h2>
+                    <p class="about-text" style="text-align: justify;">At ResQNet, we are committed to building a safer and more connected world through innovative technology. Our platform offers an Emergency SOS System, where one-tap distress signals alert nearby responders, family, and authorities for swift assistance. The Crisis Marketplace provides quick access to essential supplies like food, medical kits, and emergency tools with proximity-based matching. SafeZone enhances security with AI-driven risk alerts, real-time location sharing, and emergency support, including a "Fake Call" feature for added safety. Prioritizing Women’s Safety, ResQNet enables instant crowd alerts, verified safe spaces, and a strong community-driven security system. With ResQNet, safety is just a tap away.</p>
+                </div>
+            </div>
+        </section>
+
+        <section class="skills section" id="skills">
+            <h2 class="section-title">Features</h2>
+
+            <div class="skills-container bd-grid">
+                <div>
+                    <h2 class="skills-subtitle">Features</h2>
+                    <p class="skills-text">Our app offers a range of powerful features to ensure safety and support in times of crisis.</p>
+
+                    <div class="skills-data">
+                        <div class="skills-names">
+                            <span class="skills-name">Emergency SOS System</span>
+                        </div>
+
+                        <!-- <div class="skills-bar skills-html"></div> -->
+                    </div>
+
+                    
+
+                    <div class="skills-data">
+                        <div class="skills-names">
+                            <span class="skills-name">Smart Delivery & Supply Matching</span>
+                        </div>
+
+                        <!-- <div class="skills-bar skills-js"></div> -->
+                    </div>
+
+                    <div class="skills-data">
+                        <div class="skills-names">
+                            <span class="skills-name">SafeZone</span>
+                        </div>
+
+                        <!-- <div class="skills-bar skills-ux"></div> -->
+                    </div>
+                </div>
+
+                <div>
+                    <img src="https://i.postimg.cc/52LWbPyt/work3.jpg" alt="image" class="skills-img">
+                </div>
+            </div>
+        </section>
+
+        <section class="work section" id="work">
+            <h2 class="section-title">Meet The Team</h2>
+            <div class="work-container bd-grid">
+                <div class="work-img">
+                    <img src="static\smriti.jpeg" alt="image">
+                    <p style="text-align: center; margin-top: 10px;">Smriti</p>
+                </div>
+            
+                <div class="work-img">
+                    <img src="static\amirtha.jpeg" alt="image">
+                    <p style="text-align: center; margin-top: 10px;">Amirtha Valli</p>
+                </div>
+            
+                <div class="work-img">
+                    <img src="static\suba.jpeg" alt="image">
+                    <p style="text-align: center; margin-top: 10px;">Subashree</p>
+                </div>
+            
+                <div class="work-img">
+                    <img src="static\savi.jpeg" alt="image">
+                    <p style="text-align: center; margin-top: 10px;">Savithri</p>
+                </div>
+            </div>
+            
+        </section>
+
+        <section class="contact section" id="contact">
+            <h2 class="section-title">Contact Us</h2>
+
+            <div class="contact-container bd-grid">
+                <form action="" class="contact-form">
+                    <input type="text" placeholder="Name" class="contact-input">
+                    <input type="email" placeholder="Email" class="contact-input">
+                    <textarea name="" id="" cols="0" rows="10" class="contact-input"></textarea>
+
+                    <input type="button" value="Send" class="contact-button button">
+                </form>
+            </div>
+        </section>
+    </main>
+
+    <footer class="footer" style="background-color: #4070F4;">
+        <p class="footer-title">ResQNet</p>
+
+    
+
+        <p style="background-color: #4070F4;">&#169; 2024 Copyright all rights reserved</p>
+    </footer>
+
+    <script src="https://unpkg.com/scrollreveal"></script>
+    <script>
+        //Toggling Menu
+const showMenu = (toggleId, navId) => {
+    const toggle = document.getElementById(toggleId);
+    const nav = document.getElementById(navId);
+
+    if(toggle && nav) {
+        toggle.addEventListener('click', () => {
+            nav.classList.toggle('show');
+        })
+    }
+}
+
+showMenu('nav-toggle', 'nav-menu');
+
+//Toggling Active Link
+const navLink = document.querySelectorAll('.nav-link');
+
+function linkAction() {
+    navLink.forEach(n => n.classList.remove('active'));
+    this.classList.add('active');
+
+    const navMenu = document.getElementById('nav-menu');
+    navMenu.classList.remove('show');
+}
+
+navLink.forEach(n => n.addEventListener('click', linkAction));
+
+// Scroll Reveal
+
+const sr = ScrollReveal({
+    origin: 'top',
+    distance: '80px',
+    duration: 2000,
+    reset: true
+})
+
+sr.reveal('.home-title', {} )
+sr.reveal('.button', {delay: 200} )
+sr.reveal('.home-img', {delay: 400} )
+sr.reveal('.home-social', {delay: 400,} )
+
+sr.reveal('.about-img', {} )
+sr.reveal('.about-subtitle', {delay: 200} )
+sr.reveal('.about-text', {delay: 400} )
+
+sr.reveal('.skills-subtitle', {delay: 100} )
+sr.reveal('.skills-text', {delay: 150} )
+sr.reveal('.skills-data', {interval: 200} )
+sr.reveal('.skills-img', {delay: 400} )
+
+sr.reveal('.work-img', {interval: 200} )
+
+sr.reveal('.contact-input', {interval: 200} )
+    </script>
+</body>
+</html>
+
+

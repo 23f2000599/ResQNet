@@ -1,0 +1,393 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Marketplace</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Times New Roman', serif;
+        }
+
+        body {
+            min-height: 100vh;
+            background: white;
+            padding: 0;
+            display: flex;
+            position: relative;
+        }
+
+        .navbar {
+            width: 200px;
+            background-color: #002147;
+            padding: 20px 0;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            position: fixed;
+            left: 0;
+            top: 0;
+            bottom: 0;
+        }
+
+        .navbar a {
+            color: white;
+            text-decoration: none;
+            font-weight: bold;
+            font-size: 14px;
+            text-transform: uppercase;
+            padding: 15px 20px;
+            width: 100%;
+            text-align: center;
+        }
+
+        .navbar a:hover {
+            background-color: #2a5298;
+        }
+
+        .content {
+            margin-left: 220px;
+            width: 100%;
+            padding: 40px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .marketplace-header {
+            width: 90%;
+            max-width: 1000px;
+            background-color: #002147;
+            color: white;
+            padding: 20px;
+            border-radius: 5px;
+            text-align: center;
+            margin-bottom: 30px;
+        }
+
+        .marketplace-section {
+            width: 90%;
+            max-width: 1000px;
+            background-color: #B0E0E6;
+            margin-bottom: 30px;
+            border-radius: 10px;
+            padding: 20px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        }
+
+        .section-title {
+            font-size: 24px;
+            font-weight: 600;
+            color: #002147;
+            margin-bottom: 10px;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            width: 100%;
+        }
+
+        .section-title .arrow {
+            transition: transform 0.3s;
+        }
+
+        .item-card {
+            background-color: white;
+            padding: 15px;
+            border-radius: 5px;
+            margin-bottom: 10px;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+        }
+
+        .item-title {
+            font-size: 18px;
+            font-weight: 500;
+            color: #002147;
+        }
+
+        .item-info {
+            font-size: 16px;
+            color: #333;
+        }
+
+        .transaction-btn {
+            background-color: #28a745; /* Green background */
+            color: white;
+            padding: 8px 20px;
+            border-radius: 5px;
+            font-size: 14px;
+            cursor: pointer;
+            text-decoration: none;
+            display: inline-block;
+            margin-top: 10px;
+        }
+
+        .transaction-btn:hover {
+            background-color: #218838;
+        }
+
+        .transaction-details {
+            display: none;
+            margin-top: 10px;
+            padding: 10px;
+            background-color: #f1f1f1;
+            border-radius: 5px;
+            font-size: 14px;
+            color: #333;
+        }
+
+        .toggle-content {
+            display: none;
+        }
+
+        .toggle-content.show {
+            display: block;
+        }
+
+        .go-to-marketplace-btn {
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            background-color: #28a745;
+            color: white;
+            padding: 12px 20px;
+            border-radius: 5px;
+            font-size: 16px;
+            cursor: pointer;
+            text-decoration: none;
+        }
+
+        .go-to-marketplace-btn:hover {
+            background-color: #218838;
+        }
+
+        @media (max-width: 600px) {
+            .marketplace-header {
+                font-size: 18px;
+            }
+
+            .marketplace-section {
+                padding: 15px;
+            }
+
+            .item-card {
+                padding: 10px;
+            }
+        }
+        body {
+        margin: 0;
+        padding-top: 60px; /* Padding only for main navbar */
+    }
+
+    .main-navbar {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        background: #2e406b;
+        padding: 10px 20px;
+        color: white;
+        position: fixed;
+        top: 0;
+        left: 0;
+        right: 0;
+        z-index: 1000;
+    }
+
+    .main-navbar img {
+        height: 40px;
+    }
+
+    .nav-links button {
+        background: none;
+        border: none;
+        color: white;
+        margin: 0 10px;
+        cursor: pointer;
+        font-size: 16px;
+    }
+
+    .nav-links button:hover {
+        text-decoration: underline;
+    }
+
+    .secondary-navbar {
+        display: flex;
+        flex-direction: column;
+        background: #3a507d;
+        padding: 20px;
+        position: fixed;
+        top: 60px; /* Position it below the main navbar */
+        left: 0;
+        width: 200px;
+        bottom: 0;
+        z-index: 999;
+    }
+
+    .secondary-navbar a {
+        color: white;
+        text-decoration: none;
+        padding: 10px 0;
+        font-size: 16px;
+    }
+
+    .secondary-navbar a:hover {
+        text-decoration: underline;
+    }
+
+    /* Adjust main content to accommodate side navbar */
+    .content {
+        margin-left: 220px; /* Width of secondary navbar + some spacing */
+        padding: 20px;
+    }
+</style>
+
+<body>
+    <div class="main-navbar">
+        <img src="static/logo.jpg" alt="Logo">
+        <div class="nav-links">
+            <button onclick="location.href='sos.html'">SOS</button>
+            <button onclick="location.href='marketplace.html'">Marketplace</button>
+            <button onclick="location.href='safezone.html'">Safezone</button>
+            <button onclick="location.href='contact.html'">Contact Us</button>
+            <button onclick="location.href='profile.html'">Profile</button>
+        </div>
+    </div>
+    
+    <div class="secondary-navbar">
+        <a href="/details">Profile</a>
+        <a href="/medical">Medical History</a>
+        <a href="/emergencycon">Emergency Contacts</a>
+        <a href="/details">Details</a>
+    </div>
+    </style>
+</head>
+<body>
+    <div class="main-navbar">
+        <img src="static/logo.jpg" alt="Logo">
+        <div class="nav-links">
+            <button onclick="location.href='sos.html'">SOS</button>
+            <button onclick="location.href='marketplace.html'">Marketplace</button>
+            <button onclick="location.href='safezone.html'">Safezone</button>
+            <button onclick="location.href='contact.html'">Contact Us</button>
+            <button onclick="location.href='profile.html'">Profile</button>
+        </div>
+    </div>
+    
+    <div class="secondary-navbar">
+        <a href="/details">Profile</a>
+        <a href="#">Medical History</a>
+        <a href="/emergencycon">Emergency Contacts</a>
+        <a href="/details">Details</a>
+    </div>
+
+    <div class="content">
+        <div class="marketplace-header">
+            <h1>Your Marketplace</h1>
+            <p>Manage your items, buy and sell with ease</p>
+        </div>
+
+        <!-- Items Bought From Section -->
+        <div class="marketplace-section">
+            <h2 class="section-title" onclick="toggleSection('bought-from-items')">
+                Items Bought From
+                <span class="arrow">&#9660;</span>
+            </h2>
+            <div id="bought-from-items" class="toggle-content">
+                <div class="item-card">
+                    <div class="item-title">Laptop</div>
+                    <div class="item-info">Bought From: John Doe | Purchase Date: 10/10/2025</div>
+                    <button class="transaction-btn" onclick="toggleTransactionDetails('transaction-details-laptop')">View Transaction</button>
+                    <div id="transaction-details-laptop" class="transaction-details">
+                        <p>Name: John Doe</p>
+                        <p>Phone: 123-456-7890</p>
+                        <p>Email: johndoe@example.com</p>
+                    </div>
+                </div>
+                <div class="item-card">
+                    <div class="item-title">Camera</div>
+                    <div class="item-info">Bought From: Sarah Lee | Purchase Date: 15/10/2025</div>
+                    <button class="transaction-btn" onclick="toggleTransactionDetails('transaction-details-camera')">View Transaction</button>
+                    <div id="transaction-details-camera" class="transaction-details">
+                        <p>Name: Sarah Lee</p>
+                        <p>Phone: 987-654-3210</p>
+                        <p>Email: sarahlee@example.com</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Items Sold To Section -->
+        <div class="marketplace-section">
+            <h2 class="section-title" onclick="toggleSection('sold-to-items')">
+                Items Sold To
+                <span class="arrow">&#9660;</span>
+            </h2>
+            <div id="sold-to-items" class="toggle-content">
+                <div class="item-card">
+                    <div class="item-title">Projector</div>
+                    <div class="item-info">Sold To: Mike Smith | Sale Date: 12/10/2025</div>
+                    <button class="transaction-btn" onclick="toggleTransactionDetails('transaction-details-projector')">View Transaction</button>
+                    <div id="transaction-details-projector" class="transaction-details">
+                        <p>Name: Mike Smith</p>
+                        <p>Phone: 123-321-1234</p>
+                        <p>Email: mikesmith@example.com</p>
+                    </div>
+                </div>
+                <div class="item-card">
+                    <div class="item-title">Headphones</div>
+                    <div class="item-info">Sold To: Alice Green | Sale Date: 14/10/2025</div>
+                    <button class="transaction-btn" onclick="toggleTransactionDetails('transaction-details-headphones')">View Transaction</button>
+                    <div id="transaction-details-headphones" class="transaction-details">
+                        <p>Name: Alice Green</p>
+                        <p>Phone: 555-666-7777</p>
+                        <p>Email: alicegreen@example.com</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Past Transactions Section (Dynamic Toggle) -->
+        <div class="marketplace-section">
+            <h2 class="section-title" onclick="toggleSection('past-transactions')">
+                Past Transactions
+                <span class="arrow">&#9660;</span>
+            </h2>
+            <div id="past-transactions" class="toggle-content">
+                <div class="item-card">
+                    <div class="item-title">Smartphone</div>
+                    <div class="item-info">Bought From: Alex Brown | Purchase Date: 01/09/2025</div>
+                    <button class="transaction-btn" onclick="toggleTransactionDetails('transaction-details-smartphone')">View Transaction</button>
+                    <div id="transaction-details-smartphone" class="transaction-details">
+                        <p>Name: Alex Brown</p>
+                        <p>Phone: 123-111-2222</p>
+                        <p>Email: alexbrown@example.com</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <button class="go-to-marketplace-btn">Go to Marketplace</button>
+    </div>
+
+    <script>
+        // Function to toggle the visibility of sections
+        function toggleSection(sectionId) {
+            var section = document.getElementById(sectionId);
+            var arrow = section.previousElementSibling.querySelector('.arrow');
+            section.classList.toggle('show');
+            arrow.style.transform = section.classList.contains('show') ? 'rotate(180deg)' : 'rotate(0deg)';
+        }
+
+        // Function to toggle transaction details visibility
+        function toggleTransactionDetails(detailsId) {
+            var details = document.getElementById(detailsId);
+            details.style.display = (details.style.display === "none" || details.style.display === "") ? "block" : "none";
+        }
+    </script>
+</body>
+</html>

@@ -1,0 +1,241 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Reset Password - SocialCare</title>
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap">
+    <style>
+        :root {
+            --primary-color: #6B46C1;
+            --secondary-color: #9F7AEA;
+            --accent-color: #B794F4;
+            --text-color: #2D3748;
+            --light-text: #FFFFFF;
+            --background: #F7FAFC;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Poppins', sans-serif;
+        }
+
+        body {
+            background: linear-gradient(135deg, #6B46C1 0%, #805AD5 100%);
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 2rem;
+        }
+
+        .container {
+            display: flex;
+            background-color: white;
+            border-radius: 1rem;
+            box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.25);
+            max-width: 1000px;
+            width: 95%;
+            overflow: hidden;
+        }
+
+        .image-container {
+            flex: 1;
+            background-image: url('/static/forgot_password.avif');
+            background-size: cover;
+            background-position: center;
+            position: relative;
+        }
+
+        .image-overlay {
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: rgba(107, 70, 193, 0.3);
+            backdrop-filter: blur(1px);
+        }
+
+        .form-container {
+            flex: 1;
+            padding: 3rem;
+            text-align: center;
+        }
+
+        h2 {
+            color: var(--primary-color);
+            font-size: 2rem;
+            margin-bottom: 1rem;
+        }
+
+        p {
+            color: var(--text-color);
+            margin-bottom: 2rem;
+            opacity: 0.8;
+            font-size: 0.95rem;
+            line-height: 1.5;
+        }
+
+        .input-group {
+            margin-bottom: 1.5rem;
+            text-align: left;
+        }
+
+        .input-group label {
+            display: block;
+            font-size: 0.875rem;
+            color: var(--text-color);
+            margin-bottom: 0.5rem;
+            font-weight: 500;
+        }
+
+        input {
+            width: 100%;
+            padding: 1rem;
+            border: 1px solid #E2E8F0;
+            border-radius: 0.5rem;
+            font-size: 1rem;
+            transition: all 0.3s ease;
+            background-color: var(--background);
+        }
+
+        input:focus {
+            outline: none;
+            border-color: var(--primary-color);
+            box-shadow: 0 0 0 3px rgba(107, 70, 193, 0.1);
+            background-color: white;
+        }
+
+        .error {
+            color: #DC2626;
+            font-size: 0.875rem;
+            margin-top: 0.5rem;
+            display: none;
+        }
+
+        .btn {
+            width: 100%;
+            padding: 1rem;
+            background-color: var(--primary-color);
+            color: white;
+            border: none;
+            border-radius: 0.5rem;
+            font-size: 1rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            margin-top: 1rem;
+        }
+
+        .btn:hover {
+            background-color: #553C9A;
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(107, 70, 193, 0.15);
+        }
+
+        .back-to-login {
+            margin-top: 1.5rem;
+        }
+
+        .back-to-login a {
+            color: var(--primary-color);
+            text-decoration: none;
+            font-weight: 500;
+            transition: opacity 0.3s ease;
+        }
+
+        .back-to-login a:hover {
+            opacity: 0.8;
+        }
+
+        @media (max-width: 768px) {
+            .container {
+                flex-direction: column;
+            }
+
+            .image-container {
+                height: 200px;
+            }
+
+            .form-container {
+                padding: 2rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="image-container">
+            <div class="image-overlay"></div>
+        </div>
+        <div class="form-container">
+            <h2>Reset Password</h2>
+            <p>Please enter your email and create a new password to reset your account access.</p>
+            
+            <form id="reset-form" action="/forgotpass" method="POST" onsubmit="return validateForm(event)">
+                <div class="input-group">
+                    <label for="email">Email Address</label>
+                    <input type="email" id="email" name="email" placeholder="Enter your email" required>
+                </div>
+                
+                <div class="input-group">
+                    <label for="new_password">New Password</label>
+                    <input type="password" id="new_password" name="new_password" placeholder="Enter new password" required>
+                </div>
+                
+                <div class="input-group">
+                    <label for="confirm_password">Confirm Password</label>
+                    <input type="password" id="confirm_password" name="confirm_password" placeholder="Confirm new password" required>
+                </div>
+
+                <div id="error-message" class="error"></div>
+                
+                <button type="submit" class="btn">Reset Password</button>
+            </form>
+            
+            <div class="back-to-login">
+                <a href="/login">Back to Login</a>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        function validateForm(event) {
+            event.preventDefault();
+
+            const email = document.getElementById("email").value.trim();
+            const newPassword = document.getElementById("new_password").value;
+            const confirmPassword = document.getElementById("confirm_password").value;
+            const errorMessage = document.getElementById("error-message");
+
+            // Email validation
+            const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+            if (!emailRegex.test(email)) {
+                errorMessage.textContent = "Please enter a valid email address";
+                errorMessage.style.display = "block";
+                return false;
+            }
+
+            // Password validation
+            if (newPassword.length < 6) {
+                errorMessage.textContent = "Password must be at least 6 characters long";
+                errorMessage.style.display = "block";
+                return false;
+            }
+
+            if (newPassword !== confirmPassword) {
+                errorMessage.textContent = "Passwords do not match";
+                errorMessage.style.display = "block";
+                return false;
+            }
+
+            // If all validations pass
+            errorMessage.style.display = "none";
+            document.getElementById("reset-form").submit();
+        }
+    </script>
+</body>
+</html>

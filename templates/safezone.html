@@ -1,0 +1,1049 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Smart Safety Map - Chennai</title>
+    <link rel="stylesheet" href="https://unpkg.com/leaflet/dist/leaflet.css" />
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --primary: #6B46C1;
+            --primary-dark: #553C9A;
+            --primary-light: #9F7AEA;
+            --white: #FFFFFF;
+            --gray-100: #F7FAFC;
+            --gray-200: #EDF2F7;
+            --gray-800: #2D3748;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Poppins', sans-serif;
+        }
+
+        body {
+            background-color: var(--gray-100);
+            color: var(--gray-800);
+        }
+
+        .navbar {
+            background-color: var(--primary);
+            padding: 1rem 0;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        }
+
+        .navbar-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 0 2rem;
+        }
+
+        .nav-links {
+            display: flex;
+            gap: 2rem;
+        }
+
+        .nav-link {
+            color: var(--white);
+            text-decoration: none;
+            font-weight: 500;
+            transition: color 0.3s ease;
+        }
+
+        .nav-link:hover {
+            color: var(--gray-200);
+        }
+
+        .hero {
+            background: linear-gradient(135deg, var(--primary) 0%, var(--primary-dark) 100%);
+            padding: 4rem 0;
+            text-align: center;
+            color: var(--white);
+        }
+
+        .hero-title {
+            font-size: 2.5rem;
+            margin-bottom: 1rem;
+        }
+
+        .hero-subtitle {
+            font-size: 1.2rem;
+            opacity: 0.9;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 2rem;
+        }
+
+        .map-container {
+            background: var(--white);
+            border-radius: 1rem;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+            padding: 1rem;
+            margin: 2rem 0;
+        }
+
+        #map {
+            height: 500px;
+            width: 100%;
+            border-radius: 0.5rem;
+        }
+
+        .legend {
+            background: var(--white);
+            padding: 1rem;
+            border-radius: 0.5rem;
+            display: inline-flex;
+            gap: 1.5rem;
+            margin: 1rem 0;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        }
+
+        .legend-item {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .legend-color {
+            width: 20px;
+            height: 20px;
+            border-radius: 4px;
+        }
+
+        .safe { background: #48BB78; }
+        .caution { background: #ECC94B; }
+        .danger { background: #E53E3E; }
+
+        .button {
+            background-color: var(--primary);
+            color: var(--white);
+            padding: 1rem 2rem;
+            border: none;
+            border-radius: 0.5rem;
+            font-size: 1rem;
+            font-weight: 500;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .button:hover {
+            background-color: var(--primary-dark);
+            transform: translateY(-2px);
+        }
+
+        .button-large {
+            padding: 1.5rem 3rem;
+            font-size: 1.2rem;
+        }
+
+        .features {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 2rem;
+            margin: 4rem 0;
+        }
+
+        .feature-card {
+            background: var(--white);
+            padding: 2rem;
+            border-radius: 1rem;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+            transition: transform 0.3s ease;
+        }
+
+        .feature-card:hover {
+            transform: translateY(-5px);
+        }
+
+        .feature-title {
+            color: var(--primary);
+            margin-bottom: 1rem;
+            font-size: 1.5rem;
+        }
+
+        .feature-description {
+            color: var(--gray-800);
+            line-height: 1.6;
+        }
+
+        @media (max-width: 768px) {
+            .navbar-container {
+                flex-direction: column;
+                gap: 1rem;
+            }
+
+            .nav-links {
+                flex-direction: column;
+                align-items: center;
+            }
+
+            .hero-title {
+                font-size: 2rem;
+            }
+        }
+
+    </style>
+</head>
+<body>
+    <nav class="navbar">
+        <div class="navbar-container">
+            <h1 style="color: var(--white)">ResQNet</h1>
+            <div class="nav-links">
+                <a href="/home" class="nav-link">Home</a>
+                <a href="/sos" class="nav-link">SOS</a>
+                <a href="/marketpage" class="nav-link">Marketplace</a>
+                <a href="/safezone" class="nav-link">Safezone</a>
+                <a href="/details" class="nav-link">Profile</a>
+            </div>
+        </div>
+    </nav>
+
+    <section class="hero">
+        <h1 class="hero-title">Welcome to ResQNet</h1>
+        <p class="hero-subtitle">Your Emergency Response Platform</p>
+    </section>
+
+    <div class="container">
+        <div class="map-container">
+            <div id="map"></div>
+            <div class="legend">
+                <div class="legend-item">
+                    <span class="legend-color safe"></span>
+                    <span>Safe Zones</span>
+                </div>
+                <div class="legend-item">
+                    <span class="legend-color caution"></span>
+                    <span>Caution Areas</span>
+                </div>
+                <div class="legend-item">
+                    <span class="legend-color danger"></span>
+                    <span>High-Risk Zones</span>
+                </div>
+            </div>
+            <div class="map-explanation">
+                <p>This map displays crime rates across different areas of Chennai. Red zones indicate high-risk areas (>3000 incidents), 
+                yellow zones show moderate-risk areas (>2000 incidents), and green zones represent safer areas (≤2000 incidents). 
+                The blue marker shows your current location.</p>
+            </div>
+
+        </div>
+
+        <div class="features">
+            <div class="feature-card">
+                <h3 class="feature-title">Share Location</h3>
+                <p class="feature-description">Share your live location with emergency responders for quick assistance in case of danger.</p>
+                <button id="share-location-btn" class="button button-medium" style="margin-top: 1rem;">
+                    📍 Share Live Location
+                </button>
+                
+            </div>
+
+            <div class="feature-card">
+                <h3 class="feature-title">Location Tracking</h3>
+                <p class="feature-description">Enable continuous location tracking for enhanced safety and real-time monitoring.</p>
+                <button onclick="startLocationTracking()" class="button button-medium" style="margin-top: 1rem">
+                    🔍 Start Tracking
+                </button>
+                <div id="timer" style="margin-top: 1rem; text-align: center; color: var(--primary)"></div>
+            </div>
+
+            <div class="feature-card">
+                <h3 class="feature-title">Safety Call</h3>
+                <p class="feature-description">Activate a simulated call to help you leave uncomfortable situations safely.</p>
+                <button id="safetyCallButton" class="button button-medium" style="margin-top: 1rem">
+                    📞 Play Safety Call
+                </button>
+            </div>
+        </div>
+    </div>
+
+
+
+<div class="col-lg-6 col-12">
+    <div class="code-sections">
+        <div class="code-section">
+    <div class="noise-alert" id="noise-alert">
+        <p style="font-size: x-large; color: white;">Loud Alert Activated! Please say "STOP" to stop it.</p>
+    </div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</section>
+
+<script>
+    let timerElement = document.getElementById("timer");
+    let countdown;
+
+    function startLocationTracking() {
+        if (navigator.geolocation) {
+            navigator.geolocation.watchPosition(handlePositionChange, handleError, {
+                enableHighAccuracy: true,
+                timeout: 1000,
+                maximumAge: 0
+            });
+
+            // Start a 10-second countdown
+            let timeLeft = 10;
+            timerElement.innerText = `Time left: ${timeLeft}s`;
+
+            clearInterval(countdown); // Clear any previous countdown
+            countdown = setInterval(() => {
+                timeLeft--;
+                timerElement.innerText = `Time left: ${timeLeft}s`;
+                if (timeLeft <= 0) {
+                    clearInterval(countdown);
+                    timerElement.innerText = "Tracking started!";
+                }
+            }, 10000);
+        } else {
+            console.log("Geolocation is not supported by this browser.");
+        }
+    }
+</script>
+
+
+    <!-- Display the speech recognition transcript -->
+    <div id="transcript"></div>
+
+    <script>
+        let lastPosition = null;
+        let idleTimer = null;
+        let isAlertActive = false;
+        let recognition;
+        let audio;  // Declare audio globally so it can be accessed when stopping the sound
+
+        // Start location tracking
+        function startLocationTracking() {
+            if (navigator.geolocation) {
+                navigator.geolocation.watchPosition(handlePositionChange, handleError, {
+                    enableHighAccuracy: true,
+                    timeout: 1000,
+                    maximumAge: 0
+                });
+            } else {
+                console.log("Geolocation is not supported by this browser.");
+            }
+        }
+
+        // Handle position change and trigger idle alert
+        function handlePositionChange(position) {
+            console.log('Current Position:', position.coords.latitude, position.coords.longitude); // Check position
+            const currentPosition = { lat: position.coords.latitude, lon: position.coords.longitude };
+
+            if (lastPosition) {
+                const distance = getDistance(lastPosition, currentPosition);
+                if (distance < 5) { 
+                    if (!idleTimer) {
+                        console.log("User is idle in the same position");
+                        idleTimer = setTimeout(() => {
+                            startNoiseAlert();
+                        }, 1000); 
+                    }
+                } else {
+                    clearTimeout(idleTimer); 
+                    idleTimer = null;
+                }
+            }
+
+            lastPosition = currentPosition;
+        }
+
+        // Get distance between two coordinates (Haversine formula)
+        function getDistance(pos1, pos2) {
+            const R = 6371e3; 
+            const φ1 = pos1.lat * Math.PI / 180;
+            const φ2 = pos2.lat * Math.PI / 180;
+            const Δφ = (pos2.lat - pos1.lat) * Math.PI / 180;
+            const Δλ = (pos2.lon - pos1.lon) * Math.PI / 180;
+
+            const a = Math.sin(Δφ / 2) * Math.sin(Δφ / 2) +
+                      Math.cos(φ1) * Math.cos(φ2) *
+                      Math.sin(Δλ / 2) * Math.sin(Δλ / 2);
+
+            const c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
+            return R * c; 
+        }
+
+        // Start noise alert if the user is idle for too long
+        function startNoiseAlert() {
+            if (!isAlertActive) {
+                document.getElementById("noise-alert").style.display = "block";
+                playLoudNoise();
+                startVoiceRecognition(); // Start listening for voice commands
+            }
+        }
+
+        // Play loud noise (sound)
+        function playLoudNoise() {
+            if (!audio) { // Only create the audio object if it doesn't exist already
+                audio = new Audio('http://127.0.0.1:5000/static/assets/bleep-41488.mp3');
+                audio.loop = true;
+            }
+            audio.play().catch(err => console.error("Audio playback failed:", err)); // Catch any playback errors
+            isAlertActive = true;
+        }
+
+        // Stop the noise alert and navigate to stop.html
+        // Stop the noise alert and remove the red screen
+function stopNoiseAlert() {
+    console.log("Stopping the sound..."); // Debugging line
+    if (audio) {
+        audio.pause();  // Stop the sound
+        audio.currentTime = 0;  // Reset the sound to the start
+        console.log("Audio stopped");  // Debugging line
+    }
+    isAlertActive = false;  // Set the alert state to inactive
+    document.getElementById("noise-alert").style.display = "none"; // Remove red screen
+    document.getElementById("transcript").innerText = ""; // Clear transcript text
+}
+
+// Start voice recognition to listen for "stop"
+function startVoiceRecognition() {
+    console.log("Starting voice recognition...");  // Debugging line
+    recognition = new (window.SpeechRecognition || window.webkitSpeechRecognition)();
+    recognition.lang = "en-US";
+    recognition.continuous = false;
+
+    recognition.onresult = function(event) {
+        const transcript = event.results[0][0].transcript.toLowerCase();
+        console.log("You said: ", transcript);  // Debugging line
+        
+        // Display the transcript on the page
+        document.getElementById("transcript").innerText = `You said: ${transcript}`;
+
+        // Check if the user says "stop"
+        if (transcript.includes("stop")) {
+            console.log("Stopping the sound...");  // Debugging line
+            stopNoiseAlert();  // Stop the noise alert
+        }
+    };
+
+    recognition.onerror = function(event) {
+        console.log("Speech recognition error:", event.error);  // Debugging line
+    };
+
+    recognition.start().catch(err => console.error("Speech recognition failed:", err)); // Catch recognition errors
+}
+
+
+        // Handle geolocation errors
+        function handleError(error) {
+            console.warn(`ERROR(${error.code}): ${error.message}`);
+        }
+    </script>
+
+
+
+    <script src="https://unpkg.com/leaflet/dist/leaflet.js"></script>
+    <script>
+        document.addEventListener("DOMContentLoaded", function() {
+            // Make sure this code runs after the DOM is loaded
+            const shareButton = document.getElementById('share-location-btn');
+            
+            if(shareButton) {
+                shareButton.addEventListener('click', function() {
+                    console.log('Button clicked'); // For debugging
+                    if ("geolocation" in navigator) {
+                        navigator.geolocation.getCurrentPosition(function(position) {
+                            const lat = position.coords.latitude;
+                            const lon = position.coords.longitude;
+        
+                            // Send the location to the server
+                            fetch("http://127.0.0.1:5000/location", {
+                                method: "POST",
+                                headers: { "Content-Type": "application/json" },
+                                body: JSON.stringify({
+                                    latitude: lat,
+                                    longitude: lon
+                                })
+                            })
+                            .then(response => {
+                                if (response.ok) {
+                                    alert("Location shared successfully!");
+                                } else {
+                                    alert("Error sending location.");
+                                }
+                            })
+                            .catch(error => {
+                                console.error("Error:", error);
+                                alert("Error sending location.");
+                            });
+                        }, function(error) {
+                            alert("Error: " + error.message);
+                        });
+                    } else {
+                        alert("Geolocation is not supported by your browser");
+                    }
+                });
+            } else {
+                console.error('Share location button not found'); // For debugging
+            }
+        });
+        </script>
+        
+    <script>
+        
+         document.addEventListener("DOMContentLoaded", function () {
+
+
+            const localityCrimeData = {
+                "Sembiam": 2100,
+                "Sholinganallur": 1800,
+                "Sowcarpet": 2400,
+                "Surapet": 2200,
+                "T. Nagar": 2500,
+                "T.V.K. Nagar": 2200,
+                "Tambaram": 1600,
+                "Taramani": 2000,
+                "Teynampet": 2100,
+                "Thirumangalam": 1900,
+                "Thirumazhisai": 1600,
+                "Thirumullaivayal": 2100,
+                "Thirumullaivoyal north": 1800,
+                "Thirunindravur": 1700,
+                "Thiruvanmiyur": 2100,
+                "Thiruverkadu": 1800,
+                "Thoraipakkam": 2000,
+                "Thousand Lights": 2200,
+                "Tiruvottiyur": 2400,
+                "Tondiarpet": 2300,
+                "Triplicane": 2100,
+                "Trisulam (Chennai International Airport)": 1900,
+                "Vadapalani": 2200,
+                "Valasaravakkam": 2000,
+                "Vallalar Nagar": 2200,
+                "Vandalur": 1700,
+                "Varadharajapuram": 1600,
+                "Velachery": 2300,
+                "Vepery": 2000,
+                "Villivakkam": 1800,
+                "Virugambakkam": 2100,
+                "Vyasarpadi": 2300,
+                "West Mambalam": 2200,
+                "Kancheepuram": 1500,
+                "Chengalpattu": 1400,
+                "Pazhaverkadu": 1600,
+                "Ponneri": 1500,
+                "Athipattu": 1700,
+                "Sholavaram": 1800,
+                "Minjur": 1600,
+                "Red Hills": 1700,
+                "Ennore": 1800,
+                "Tiruvallur": 1600,
+                "Arakkonam": 1500,
+                "Sriperumbudur": 1800,
+                "Tamaraipakkam": 1700,
+                "Irungatukottai": 1600,
+                "Kadambathur": 1500,
+                "Chembarambakkam": 1400,
+                "Singaperumalkoil": 1500,
+                "Maraimalai nagar": 1600,
+                "Urapakkam": 1700,
+                "Guduvanchery": 1600,
+                "Karapakkam": 2000,
+                "Kanathur": 1900,
+                "Muthukadu": 1800,
+                "Kelambakkam": 2100,
+                "Kovalam": 1600,
+                "Siruseri": 1700,
+                "Parry's Corner": 3200,
+                "Pattabiram": 2200,
+                "Pattalam": 2000,
+                "Pattravakkam": 1900,
+                "Pazhavanthangal": 1800,
+                "Peerkankaranai": 1600,
+                "Perambur": 2500,
+                "Periamet": 2400,
+                "Perungalathur": 1500,
+                "Perungudi": 2100,
+                "Ponniammanmedu": 2300,
+                "Poonamallee": 2000,
+                "Porur": 2200,
+                "Pozhichalur": 1800,
+                "Pudur": 1700,
+                "Pulianthope": 2300,
+                "Purasawalkam": 2100,
+                "Puzhal": 2400,
+                "Ramapuram": 1600,
+                "Red Hills": 2300,
+                "Royapuram": 2200,
+                "Saidapet": 2500,
+                "Saligramam": 2100,
+                "Selaiyur": 1600,
+                "Selavoyal": 2000,
+                
+                "Madhavaram Milk Colony": 2500,
+                "Madipakkam": 1800,
+                "Maduravoyal": 2000,
+                "Meenambakkam": 2100,
+                "Manali": 2200,
+                "Manali New Town": 2300,
+                "Manapakkam": 1600,
+                "Mangadu": 1400,
+                "Manjambakkam": 2100,
+                "Mannadi": 1800,
+                "Mathur MMDA": 2000,
+                "Medavakkam": 1700,
+                "Minjur": 2600,
+                "Mogappair": 2200,
+                "Moolakadai": 2000,
+                "Mowlivakkam": 1500,
+                "Mudichur": 1300,
+                "Mugalivakkam": 1600,
+                "Mylapore": 3500,
+                "Nagalkeni": 1500,
+                "Nandambakkam": 1400,
+                "Nanganallur": 1600,
+                "Naravarikuppam": 1800,
+                "Neelankarai": 1300,
+                "Nerkundrum": 1700,
+                "Nesapakkam": 1500,
+                "New Washermenpet": 1900,
+                "Nolambur": 1800,
+                "Old Washermenpet": 1900,
+                "Oragadam": 2100,
+                "Otteri": 2000,
+                "Padi": 1600,
+                "Palavakkam": 1500,
+                "Pallavaram": 1700,
+                "Pallikaranai": 1800,
+                "Pammal": 1500,
+                "Park Town": 2200,
+                "Choolai": 2200,
+                "MMDA Colony": 1800,
+                "Defence Colony": 1700,
+                "Egmore": 4000,
+                "Ennore": 2800,
+                "Ambattur": 3200,
+                "George Town": 3500,
+                "Gerugambakkam": 1500,
+                "Gopalapuram": 1400,
+                "Guindy": 3000,
+                "Sikkarayapuram": 1300,
+                "ICF Colony": 1600,
+                "Injambakkam": 1200,
+                "Irumbuliyur": 1100,
+                "Iyyapanthangal": 2200,
+                "Jamalia": 2300,
+                "K.K. Nagar": 2000,
+                "Kadaperi": 1900,
+                "Kallikuppam": 2100,
+                "Karambakkam": 1500,
+                "Kathirvedu": 2400,
+                "Kathivakkam": 2200,
+                "Keelkattalai": 1700,
+                "Kodungaiyur": 2600,
+                "Kolappakkam": 1400,
+                "Kolathur": 3500,
+                "Korattur": 1800,
+                "Korukkupet": 2500,
+                "Kosapet": 1600,
+                "Kottivakkam": 1200,
+                "Kovilambakkam": 1800,
+                "Kovur": 1500,
+                "Kundrathur": 1700,
+                "Lakshmipuram": 1800,
+                "M.G.R. Garden": 1300,
+                "M.G.R. Nagar": 1400,
+                "M.K.B. Nagar": 1900,
+                "Madhavaram": 2800,
+                "Adambakkam": 2500,
+                "Adyar": 2000,
+                "Alandur": 1800,
+                "Alapakkam": 2200,
+                "Alwarthirunagar": 1500,
+                "Ambattur": 3200,
+                "Aminjikarai": 2300,
+                "Anna Nagar": 1000,
+                "Annanur": 1900,
+                "Arumbakkam": 2100,
+                "Ashok Nagar": 1700,
+                "Avadi": 2700,
+                "Ayappakkam": 2500,
+                "Basin Bridge": 3500,
+                "Besant Nagar": 1200,
+                "Broadway": 4000,
+                "Central": 8000,
+                "Chetpet": 1500
+                
+            };
+
+            // Coordinates for the localities in Chennai
+            const localityCoordinates = {
+                "Sembiam": [13.11528, 80.2339],
+                "Sholinganallur": [12.901, 80.2279],
+                "Sowcarpet": [13.0987, 80.2785],
+                "Surapet": [13.1454, 80.1838],
+                "T. Nagar": [13.0418, 80.2341],
+                "T.V.K. Nagar": [13.1199, 80.2342],
+                "Tambaram": [12.9249, 80.1],
+                "Taramani": [12.9863, 80.2432],
+                "Teynampet": [13.0405, 80.2503],
+                "Thirumangalam": [13.0835, 80.1945],
+                "Thirumazhisai": [13.0522, 80.0615],
+                "Thirumullaivayal": [13.1307, 80.1314],
+                "Thirumullaivoyal north": [13.13183, 80.13082],
+                "Thirunindravur": [13.1181, 80.0336],
+                "Thiruvanmiyur": [12.983, 80.2594],
+                "Thiruverkadu": [13.06953, 80.12423],
+                "Thoraipakkam": [12.9386, 80.2377],
+                "Thousand Lights": [13.0617, 80.2544],
+                "Tiruvottiyur": [13.1643, 80.3001],
+                "Tondiarpet": [13.1261, 80.288],
+                "Triplicane": [13.0588, 80.2756],
+                "Trisulam (Chennai International Airport)": [12.9695, 80.1704],
+                "Vadapalani": [13.05, 80.2121],
+                "Valasaravakkam": [13.0403, 80.1723],
+                "Vallalar Nagar": [13.1056, 80.2799],
+                "Vandalur": [12.8913, 80.081],
+                "Varadharajapuram": [12.9095, 80.0703],
+                "Velachery": [12.9815, 80.218],
+                "Vepery": [13.0853, 80.2607],
+                "Villivakkam": [13.1086, 80.2061],
+                "Virugambakkam": [13.0532, 80.1922],
+                "Vyasarpadi": [13.1246, 80.2628],
+                "West Mambalam": [13.0383, 80.2209],
+                "Kancheepuram": [13.0827, 80.2707],
+                "Chengalpattu": [12.6819, 79.9888],
+                "Pazhaverkadu": [13.41667, 80.31667],
+                "Ponneri": [13.32, 80.2],
+                "Athipattu": [13.17081, 79.76802],
+                "Sholavaram": [13.236, 80.1635],
+                "Minjur": [13.2989, 80.2632],
+                "Red Hills": [13.1865, 80.1999],
+                "Ennore": [13.2146, 80.3203],
+                "Tiruvallur": [13.2544, 80.0088],
+                "Arakkonam": [13.1236, 80.06339],
+                "Sriperumbudur": [13.1181, 80.0336],
+                "Tamaraipakkam": [13.0414, 80.126],
+                "Irungatukottai": [12.9977, 80.0972],
+                "Kadambathur": [13.09953, 79.86187],
+                "Chembarambakkam": [13.0114, 80.0591],
+                "Singaperumalkoil": [12.7593, 80.0033],
+                "Maraimalai nagar": [12.793, 80.0252],
+                "Urapakkam": [12.8674, 80.0699],
+                "Guduvanchery": [12.8439, 80.0597],
+                "Karapakkam": [12.9191, 80.23],
+                "Kanathur": [12.8663, 80.2447],
+                "Muthukadu": [12.827, 80.2403],
+                "Kelambakkam": [13.06042, 80.24958],
+                "Kovalam": [12.787, 80.2504],
+                "Siruseri": [12.835, 80.22],
+                "Parry's Corner": [13.0896, 80.2882],
+                "Pattabiram": [13.11688, 80.06339],
+                "Pattalam": [13.09739, 80.25929],
+                "Pattravakkam": [13.1103, 80.1673],
+                "Pazhavanthangal": [12.98954, 80.18629],
+                "Peerkankaranai": [12.9048, 80.089],
+                "Perambur": [13.121, 80.2326],
+                "Periamet": [13.0829, 80.266],
+                "Perungalathur": [12.9048, 80.08891],
+                "Perungudi": [12.9654, 80.2461],
+                "Ponniammanmedu": [13.135, 80.2274],
+                "Poonamallee": [13.0473, 80.0945],
+                "Porur": [13.0382, 80.1565],
+                "Pozhichalur": [12.9898, 80.1434],
+                "Pudur": [13.1299, 80.1603],
+                "Pulianthope": [13.0982, 80.2683],
+                "Purasawalkam": [13.0902, 80.2543],
+                "Puzhal": [13.1585, 80.2037],
+                "Ramapuram": [13.0317, 80.1817],
+                "Red Hills": [13.1865, 80.1999],
+                "Royapuram": [13.1137, 80.2954],
+                "Saidapet": [13.0213, 80.2231],
+                "Saligramam": [13.0545, 80.2011],
+                "Selaiyur": [12.9068, 80.1425],
+                "Selavoyal": [13.14577, 80.25571],
+                "Madhavaram Milk Colony": [13.1505, 80.2419],
+                "Madipakkam": [12.9647, 80.1961],
+                "Maduravoyal": [13.0656, 80.1608],
+                "Meenambakkam": [12.9875, 80.1753],
+                "Manali": [13.1779, 80.2701],
+                "Manali New Town": [13.1933, 80.2708],
+                "Manapakkam": [13.0213, 80.1832],
+                "Mangadu": [13.04188, 80.11501],
+                "Manjambakkam": [13.16691, 80.22942],
+                "Mannadi": [13.0928, 80.2893],
+                "Mathur MMDA": [13.1724, 80.24788],
+                "Medavakkam": [12.9171, 80.1923],
+                "Minjur": [13.2789, 80.2623],
+                "Mogappair": [13.0837, 80.175],
+                "Moolakadai": [13.1296, 80.2416],
+                "Mowlivakkam": [13.02172, 80.14146],
+                "Mudichur": [12.9102, 80.07171],
+                "Mugalivakkam": [13.021, 80.1614],
+                "Mylapore": [13.0368, 80.2676],
+                "Nagalkeni": [12.9646, 80.1359],
+                "Nandambakkam": [12.9824, 80.0603],
+                "Nanganallur": [12.9807, 80.1882],
+                "Naravarikuppam": [13.19133, 80.18473],
+                "Neelankarai": [12.9492, 80.2547],
+                "Nerkundrum": [13.0678, 80.1859],
+                "Nesapakkam": [13.0379, 80.192],
+                "New Washermenpet": [13.1148, 80.2872],
+                "Nolambur": [13.0754, 80.168],
+                "Old Washermenpet": [13.1148, 80.2872],
+                "Oragadam": [13.129, 80.1548],
+                "Otteri": [13.0921, 80.251],
+                "Padi": [13.0965, 80.1845],
+                "Palavakkam": [12.9617, 80.2562],
+                "Pallavaram": [12.9675, 80.1491],
+                "Pallikaranai": [12.9349, 80.2137],
+                "Pammal": [12.9749, 80.1328],
+                "Park Town": [13.0796, 80.2752],
+                "Choolai": [13.0919, 80.2642],
+                "MMDA Colony": [13.0665, 80.2147],
+                "Defence Colony": [13.0262, 80.2022],
+                "Egmore": [13.0732, 80.2609],
+                "Ennore": [13.2146, 80.3203],
+                "Ambattur": [13.12368, 80.24828],
+                "George Town": [13.0969, 80.2865],
+                "Gerugambakkam": [13.0136, 80.1353],
+                "Gopalapuram": [13.0489, 80.2586],
+                "Guindy": [13.0067, 80.2206],
+                "Sikkarayapuram": [12.9387, 80.1461],
+                "ICF Colony": [13.0981, 80.2195],
+                "Injambakkam": [12.9198, 80.2511],
+                "Irumbuliyur": [12.9172, 80.1077],
+                "Iyyapanthangal": [13.0381, 80.1354],
+                "Jamalia": [13.1048, 80.2533],
+                "K.K. Nagar": [13.041, 80.1994],
+                "Kadaperi": [12.9336, 80.1254],
+                "Kallikuppam": [13.13097, 80.17486],
+                "Karambakkam": [13.0376, 80.1532],
+                "Kathirvedu": [13.1521, 80.2001],
+                "Kathivakkam": [13.2046, 80.31674],
+                "Keelkattalai": [12.9556, 80.1869],
+                "Kodungaiyur": [13.14096, 80.24818],
+                "Kolappakkam": [13.0101, 80.1492],
+                "Kolathur": [13.124, 80.2121],
+                "Korattur": [13.1082, 80.1834],
+                "Korukkupet": [13.1186, 80.278],
+                "Kosapet": [13.0922, 80.2551],
+                "Kottivakkam": [12.9682, 80.2599],
+                "Kovilambakkam": [12.9409, 80.1851],
+                "Kovur": [12.9900, 80.1948],
+                "Kundrathur": [12.9977, 80.0972],
+                "Lakshmipuram": [13.1361, 80.2005],
+                "M.G.R. Garden": [13.025, 80.1823],
+                "M.G.R. Nagar": [13.0352, 80.1973],
+                "M.K.B. Nagar": [13.12128, 80.25873],
+                "Madhavaram": [13.1488, 80.2306],
+                "Adambakkam": [12.988, 80.2047],
+                "Adyar": [13.0012, 80.2565],
+                "Alandur": [12.9975, 80.2006],
+                "Alapakkam": [13.049, 80.1673],
+                "Alwarthirunagar": [13.0426, 80.184],
+                "Ambattur": [13.1143, 80.1548],
+                "Aminjikarai": [13.0698, 80.2245],
+                "Anna Nagar": [13.085, 80.2101],
+                "Annanur": [13.1184, 80.1246],
+                "Arumbakkam": [13.0724, 80.2102],
+                "Ashok Nagar": [13.0373, 80.2123],
+                "Avadi": [13.1067, 80.097],
+                "Ayappakkam": [13.0925, 80.1372],
+                "Basin Bridge": [13.1014, 80.2704],
+                "Besant Nagar": [13.0003, 80.2667],
+                "Broadway": [19.2274, 72.9739],
+                "Central": [13.0825, 80.2755],
+                "Chetpet": [13.0714, 80.2417]
+
+            };
+            // Add crime data markers
+            document.getElementById('share-location-btn').addEventListener('click', function() {
+        if ("geolocation" in navigator) {
+            // Get current position for sharing
+            navigator.geolocation.getCurrentPosition(function(position) {
+                var lat = position.coords.latitude;
+                var lon = position.coords.longitude;
+
+                // Send the location to the server
+                fetch("http://127.0.0.1:5000/location", {
+                    method: "POST",
+                    headers: { "Content-Type": "application/json" },
+                    body: JSON.stringify({
+                        latitude: lat,
+                        longitude: lon
+                    })
+                })
+                .then(response => {
+                    if (response.ok) {
+                        alert("Location shared successfully!");
+                    } else {
+                        alert("Error sending location.");
+                    }
+                })
+                .catch(error => {
+                    console.error("Error:", error);
+                    alert("Error sending location.");
+                });
+            }, function(error) {
+                alert("Error: " + error.message);
+            });
+        } else {
+            alert("Geolocation is not supported by your browser");
+        }
+    });
+                        // Initialize the map with default view of Chennai
+                        var map = L.map("map").setView([13.0827, 80.2707], 12);
+
+L.tileLayer("https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png", {
+    attribution: "&copy; OpenStreetMap contributors"
+}).addTo(map);
+
+// Create a location marker with custom icon
+let userMarker;
+let userCircle;
+
+// Function to handle location updates
+function onLocationFound(position) {
+    const lat = position.coords.latitude;
+    const lng = position.coords.longitude;
+    const accuracy = position.coords.accuracy;
+
+    if (!userMarker) {
+        userMarker = L.marker([lat, lng]).addTo(map);
+        userCircle = L.circle([lat, lng], { radius: accuracy }).addTo(map);
+    } else {
+        userMarker.setLatLng([lat, lng]);
+        userCircle.setLatLng([lat, lng]);
+        userCircle.setRadius(accuracy);
+    }
+
+    userMarker.bindPopup("You are here!").openPopup();
+    map.setView([lat, lng], 16);
+}
+
+function onLocationError(e) {
+    alert(e.message);
+}
+
+// Function to start tracking
+function startTracking() {
+    if ("geolocation" in navigator) {
+        navigator.geolocation.getCurrentPosition(onLocationFound, onLocationError);
+        
+        const watchId = navigator.geolocation.watchPosition(
+            onLocationFound,
+            onLocationError,
+            {
+                enableHighAccuracy: true,
+                timeout: 5000,
+                maximumAge: 0
+            }
+        );
+    } else {
+        alert("Geolocation is not supported by your browser");
+    }
+}
+
+// Start tracking when page loads
+startTracking();
+
+// Add crime data markers
+for (const locality in localityCrimeData) {
+    const crimeCount = localityCrimeData[locality];
+    const coordinates = localityCoordinates[locality];
+
+    if (coordinates) {
+        const color = crimeCount > 3000 ? "red" : 
+                     crimeCount > 2000 ? "yellow" : "green";
+        
+        L.circleMarker(coordinates, {
+            color: color,
+            fillColor: color,
+            fillOpacity: 0.5,
+            radius: 10,
+            weight: 2
+        }).addTo(map).bindPopup(
+            `<b>${locality}</b><br>Crime Rate: ${crimeCount}`
+        );
+    }
+}
+});
+    // When "Share Live Location" button is clicked
+    document.getElementById('share-location-btn').addEventListener('click', function() {
+        if (navigator.geolocation) {
+            navigator.geolocation.getCurrentPosition(function(position) {
+                var lat = position.coords.latitude;
+                var lon = position.coords.longitude;
+
+                // Add a marker to the map at the user's location
+                L.marker([lat, lon]).addTo(map)
+                    .bindPopup("You are here!")
+                    .openPopup();
+
+                // Center the map to the user's location
+                map.setView([lat, lon], 14);
+
+                // Optionally, you can display the location coordinates
+                console.log("Latitude: " + lat + ", Longitude: " + lon);
+
+                // Send the location to the server
+                fetch("http://127.0.0.1:5000/location", {
+                    method: "POST",
+                    headers: { "Content-Type": "application/json" },
+                    body: JSON.stringify({
+                        latitude: lat,
+                        longitude: lon
+                    })
+                })
+                .then(response => {
+                    if (response.ok) {
+                        alert("Location shared successfully!");
+                    } else {
+                        alert("Error sending location.");
+                    }
+                })
+                .catch(error => {
+                    console.error("Error:", error);
+                    alert("Error sending location.");
+                });
+
+            }, function(error) {
+                alert("Error: " + error.message);
+            });
+        } else {
+            alert("Geolocation is not supported by your browser.");
+        }
+    });
+    document.addEventListener('DOMContentLoaded', function() {
+    const safetyCallButton = document.getElementById('safetyCallButton');
+    const safetyAudio = new Audio('/static/assets/safetycall.mp3');
+    
+    safetyCallButton.addEventListener('click', function() {
+        if (safetyAudio.paused) {
+            safetyAudio.play();
+            safetyCallButton.textContent = '🔊 Playing Call...';
+            safetyCallButton.style.backgroundColor = '#27ae60';
+        } else {
+            safetyAudio.pause();
+            safetyAudio.currentTime = 0;
+            safetyCallButton.textContent = '📞 Play Safety Call';
+            safetyCallButton.style.backgroundColor = '#e74c3c';
+        }
+    });
+
+    // When audio ends, reset the button
+    safetyAudio.addEventListener('ended', function() {
+        safetyCallButton.textContent = '📞 Play Safety Call';
+        safetyCallButton.style.backgroundColor = '#e74c3c';
+    });
+});
+
+    </script>
+</body>
+</html>
